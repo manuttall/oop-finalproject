@@ -1,0 +1,19 @@
+@startuml Screen
+scale 2
+title "UML Class Diagram"
+class Screen {
+    .. Class Variables ..
+	_instance: Solution
+    .. Instance Variables ..
+    - engine: Engine
+    .. Overloaded Methods ..
+    - __new__(cls): Solution
+    + __init__(): None
+    .. Instance Methods ..
+	+ read_data(source: Any): None
+    + render(): None
+    + display(source: Any): None
+    .. Static Methods ..
+    + main(): None
+}
+@enduml

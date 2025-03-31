@@ -25,5 +25,6 @@ echo "Installed versions:"
 flake8 --version
 mypy --version
 pytest --version
+hypothesis --version
 
 echo "Installation complete!"

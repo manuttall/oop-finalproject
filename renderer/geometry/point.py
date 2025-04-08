@@ -1,7 +1,7 @@
 """Point class to represent a point in the Cartesian plane"""
 
 __author__ = "Michael Nuttall"
-__date__ = "2025/02/24"
+__date__ = "2025/04/07"
 __license__ = "MIT"
 __version__ = "0.1.0"
 __maintainer__ = "Michael Nuttall"

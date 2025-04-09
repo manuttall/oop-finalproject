@@ -7,10 +7,11 @@ __version__ = "0.1.0"
 __maintainer__ = "Michael Nuttall"
 
 
+from geometry.point import Point
 import math
 
 
-class Vertex:
+class Vertex(Point):
     """A vertex of the form (x, y, z) in 3D space."""
 
     def __init__(self, x: int, y: int, z: int) -> None:
@@ -21,45 +22,8 @@ class Vertex:
             y (int): coordinate along the y-axis
             z (int): coordinate along the z-axis
         """
-        self._x: int = x
-        self._y: int = y
+        super().__init__(x, y)
         self._z: int = z
-
-    @property
-    def x(self) -> int:
-        """Property to get x
-
-        Returns:
-            int: x
-        """
-        return self._x
-
-    @x.setter
-    def x(self, value: int) -> None:
-        """Property to set x
-
-        Args:
-            value (int): x
-        """
-        self._x = value
-
-    @property
-    def y(self) -> int:
-        """Property to get y
-
-        Returns:
-            int: y
-        """
-        return self._y
-
-    @y.setter
-    def y(self, value: int) -> None:
-        """Property to set y
-
-        Args:
-            value (int): y
-        """
-        self._y = value
 
     @property
     def z(self) -> int:
@@ -104,8 +68,8 @@ class Vertex:
         if not isinstance(other, Vertex):
             raise TypeError("The other object must be a Vertex.")
 
-        dx = self._x - other.x
-        dy = self._y - other.y
-        dz = self._z - other.z
+        dx: int = self._x - other.x
+        dy: int = self._y - other.y
+        dz: int = self._z - other.z
 
         return math.sqrt(dx ** 2 + dy ** 2 + dz ** 2)

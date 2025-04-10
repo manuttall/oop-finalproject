@@ -7,20 +7,20 @@ __version__ = "0.1.0"
 __maintainer__ = "Arin Hartung"
 
 from typing import List
-from vertex import Vertex
+from geometry.vertex import Vertex
 
 
 class Face:
     """A face of the form face made of point in a the Cartesian plane.
     """
-    def __init__(self, points_num: int, points: List[Vertex]) -> None:
+    def __init__(self, points: List[Vertex]) -> None:
         """The constructor for face
 
         Args:
             points_num (int): Number of points in face
             points = a list of points
         """
-        self._points_num = points_num
+        self._points_num = len(points)
         self._points: List[Vertex] = points
 
     @property

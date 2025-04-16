@@ -8,21 +8,24 @@ __maintainer__ = "Arin Hartung"
 
 from typing import List
 from geometry.vertex import Vertex
+from geometry.shader import Shader
 
 
 class Face3D:
     """A face3D of the form face3D made of point in a the Cartesian plane.
     """
-    def __init__(self, points: List[Vertex]) -> None:
+    def __init__(self, points: List[Vertex], color: Shader = Shader(0, 0, 0)) -> None:
         """The constructor for face3D
 
         Args:
             points_num (int): Number of points in face3D
             points = a list of points
+            color = a shader with the color of object defult white
         """
         self._distance: float = -99.9
         self._points_num = len(points)
         self._points: List[Vertex] = points
+        self._color = color
 
     @property
     def points_num(self) -> int:
@@ -59,6 +62,19 @@ class Face3D:
     @points.setter
     def points(self, points: list[Vertex]) -> None:
         self._points = points
+
+    @property
+    def color(self) -> Shader:
+        """
+        Property to get/set color shader
+        Returns:
+            Shader: color
+        """
+        return self._color
+
+    @color.setter
+    def color(self, color: Shader) -> None:
+        self._color = color
 
     def __eq__(self, other: object) -> bool:
         """Equality checker

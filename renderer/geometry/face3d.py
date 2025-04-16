@@ -10,14 +10,14 @@ from typing import List
 from geometry.vertex import Vertex
 
 
-class Face:
-    """A face of the form face made of point in a the Cartesian plane.
+class Face3D:
+    """A face3D of the form face3D made of point in a the Cartesian plane.
     """
     def __init__(self, points: List[Vertex]) -> None:
-        """The constructor for face
+        """The constructor for face3D
 
         Args:
-            points_num (int): Number of points in face
+            points_num (int): Number of points in face3D
             points = a list of points
         """
         self._points_num = len(points)
@@ -53,23 +53,23 @@ class Face:
         """Equality checker
 
         Args:
-            other (Face): other Points to compare with.
+            other (Face3D): other Points to compare with.
 
         Returns:
             bool: True if this object points are equal to the other's
         """
-        if not isinstance(other, Face):
+        if not isinstance(other, Face3D):
             raise NotImplementedError
         return self._points == other.points
 
     def mid_point(self):
-        """Finds the Mid Point of the face
+        """Finds the Mid Point of the face3D
 
         Args:
             none
 
         Returns:
-            Vertex : the mid point of the face
+            Vertex : the mid point of the face3D
         """
         x_total = 0
         y_total = 0

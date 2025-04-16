@@ -145,7 +145,7 @@ class Shader:
         self._b = b
 
     @property
-    def hex(self) -> int:
+    def hex(self) -> str:
         """Property to get hex of RGB
 
         Returns:

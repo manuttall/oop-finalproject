@@ -39,7 +39,7 @@ class Mesh3D:
             value (List[Face3D]): faces
         """
         self._faces = value
-    
+
     def set_color(self, value: Shader) -> None:
         """Changes the color for every face in the mesh
 
@@ -48,3 +48,12 @@ class Mesh3D:
         """
         for face in self._faces:
             face.color(value)
+
+    def add(self, new_face: Face3D) -> None:
+        """adds a face3D to the mesh list
+
+        Args:
+            new_face (Face3D): new face to add
+        """
+        position = len(self.faces)
+        self._faces[position] = new_face

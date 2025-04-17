@@ -22,33 +22,11 @@ class Face3D:
             points = a list of points
             color = a shader with the color of object defult white
         """
-        self._distance: float = -99.9
         self._points_num = len(points)
+        if self._points_num != 3:
+            raise ValueError(f"Expected 3 points, got {self._points_num}")
         self._points: List[Vertex] = points
         self._color = color
-
-    @property
-    def points_num(self) -> int:
-        """
-        Property to get/set points_num value of point
-        Returns:
-            int: points_num
-        """
-        return self._points_num
-
-    @points_num.setter
-    def points_num(self, points_num: int) -> None:
-        self._points_num = points_num
-
-    @property
-    def distance(self) -> float:
-        """
-        Property to get/set distance value of point
-        distance must be set by running closest_point
-        Returns:
-            float: distance
-        """
-        return self._distance
 
     @property
     def points(self) -> list[Vertex]:
@@ -61,6 +39,9 @@ class Face3D:
 
     @points.setter
     def points(self, points: list[Vertex]) -> None:
+        self._points_num = len(points)
+        if self._points_num != 3:
+            raise ValueError(f"Expected 3 points, got {self._points_num}")
         self._points = points
 
     @property
@@ -89,60 +70,8 @@ class Face3D:
             raise NotImplementedError
         return self._points == other.points
 
-    def __lt__(self, other: object) -> bool:
-        """less then  checker
-
-        Args:
-            other (Face3D): other Points to compare with.
-
-        Returns:
-            bool: True if this object distance is less than to the other's
-        """
-        if not isinstance(other, Face3D):
-            raise NotImplementedError
-        return self._distance < other._distance
-
-    def __gt__(self, other: object) -> bool:
-        """greater then checker
-
-        Args:
-            other (Face3D): other Points to compare with.
-
-        Returns:
-            bool: True if this object distance is greater than to the other's
-        """
-        if not isinstance(other, Face3D):
-            raise NotImplementedError
-        return self._distance > other._distance
-
-    def __ge__(self, other: object) -> bool:
-        """greater then checker
-
-        Args:
-            other (Face3D): other Points to compare with.
-
-        Returns:
-            bool: True if this object distance is greater than to the other's
-        """
-        if not isinstance(other, Face3D):
-            raise NotImplementedError
-        return self._distance >= other._distance
-
-    def __le__(self, other: object) -> bool:
-        """greater then checker
-
-        Args:
-            other (Face3D): other Points to compare with.
-
-        Returns:
-            bool: True if this object distance is greater than to the other's
-        """
-        if not isinstance(other, Face3D):
-            raise NotImplementedError
-        return self._distance <= other._distance
-
-    def mid_point(self):
-        """Finds the Mid Point of the face3D
+    def centroid(self):
+        """Finds the centroid of the face3D
 
         Args:
             none
@@ -162,7 +91,7 @@ class Face3D:
         vz = int(z_total/self._points_num)
         return Vertex(vx, vy, vz)
 
-    def closest_point(self, new_point: Vertex):
+    def closest_point(self, new_point: Vertex) -> Vertex:
         """Finds the Closet Point to a Given Point
             including the posiblity of the mid point
             also sets the distance of the private var
@@ -172,7 +101,7 @@ class Face3D:
         Returns:
             Vertex: the closet point to given point
         """
-        close_point = self.mid_point()
+        close_point = self.centroid()
         delta = close_point.distance(new_point)
 
         for point in self._points:
@@ -180,5 +109,14 @@ class Face3D:
             if new_delta < delta:
                 delta = new_delta
                 close_point = point
-        self._distance = delta
         return close_point
+
+    def distance(self, new_point: Vertex) -> float:
+        """Finds the distance to from the Face to the given point
+        Args:
+            Vertex: other Point to compare with.
+
+        Returns:
+            float: the distance from point to given point
+        """
+        return new_point.distance(self.closest_point(new_point))

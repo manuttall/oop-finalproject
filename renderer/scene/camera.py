@@ -3,6 +3,7 @@
 from __future__ import annotations
 from geometry.vertex import Vertex
 from geometry.vector import Vector
+from scene.aspect_ratio import AspectRatio
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/16"
@@ -15,23 +16,20 @@ class Camera(Vertex):
     """A camera defined by its position and orientation in 3D space."""
 
     def __init__(self, origin: Vertex, look_at: Vertex,
-                 vertical_aspect: float, horizontal_aspect: float,
-                 resolution: int) -> None:
+                 aspect_ratio: AspectRatio, resolution: int) -> None:
         """Constructor
 
         Args:
             origin (Vertex): the camera's position in 3D space
             look_at (Vertex): the point the camera is looking at
-            vertical_aspect (float): vertical aspect ratio (height proportion)
-            horizontal_aspect (float): horizontal aspect ratio (width proportion)
-            resolution (int): resolution multiplier for converting projected
-                              coordinates to canvas space
+            aspect_ratio (AspectRatio): object containing vertical and horizontal aspect
+            resolution (int): resolution multiplier for converting
+                              projected coordinates to canvas space
         """
         super().__init__(origin.x, origin.y, origin.z)
 
         self._look_at = look_at
-        self._vertical_aspect = vertical_aspect
-        self._horizontal_aspect = horizontal_aspect
+        self._aspect_ratio = aspect_ratio
         self._resolution = resolution
 
         self._forward: Vector = Vector(0, 0, -1)
@@ -43,10 +41,10 @@ class Camera(Vertex):
     def _recalculate_axes(self) -> None:
         """Private method to recalculate the camera's forward, right, and up vectors.
 
-        The forward vector is the normalized direction from the camera's origin 
-        to the look-at point.
-        The right vector is perpendicular to the forward and global up vectors.
-        The up vector is perpendicular to both the forward and right vectors.
+        The forward vector is the normalized direction from the
+        camera's origin to the look-at point.
+        The right vector is perpendicular to the forward and a world-up vector.
+        The up vector is perpendicular to both the right and forward vectors.
         All vectors are normalized.
         """
         forward = (self._look_at - self).normalize()
@@ -105,19 +103,11 @@ class Camera(Vertex):
         return self._resolution
 
     @property
-    def vertical_aspect(self) -> float:
-        """Returns the vertical aspect ratio of the camera.
+    def aspect_ratio(self) -> AspectRatio:
+        """Returns the camera's aspect ratio.
 
         Returns:
-            float: vertical aspect ratio
+            AspectRatio: the stored aspect ratio object
         """
-        return self._vertical_aspect
-
-    @property
-    def horizontal_aspect(self) -> float:
-        """Returns the horizontal aspect ratio of the camera.
-
-        Returns:
-            float: horizontal aspect ratio
-        """
-        return self._horizontal_aspect
+        return self._aspect_ratio
+    

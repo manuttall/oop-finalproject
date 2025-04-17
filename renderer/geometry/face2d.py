@@ -1,4 +1,4 @@
-"""Shape class to represent a Shape in the Cartesian plane made of points"""
+"""face2d class to represent a 2d face in the Cartesian plane made of points"""
 
 __author__ = "Arin Hartung"
 __date__ = "2025/04/09"
@@ -12,20 +12,22 @@ from geometry.shader import Shader
 
 
 class Face2D:
-    """A Shape of the form Shape made of point in a the Cartesian plane.
+    """A face2D of the form face made of point in a the Cartesian plane.
     """
-    def __init__(self, points: List[Point], color: Shader = Shader(0, 0, 0)) -> None:
-        """The constructor for Shape
+    def __init__(self, points: List[Point], dist: int, color: Shader) -> None:
+        """The constructor for face2d
 
         Args:
-            points_num (int): Number of points in Shape
+            points_num (int): Number of points in the face
             points = a list of points
+            dist = distance from object of importace
         """
         self._points_num = len(points)
         if self._points_num != 3:
             raise ValueError(f"Expected 3 points, got {self._points_num}")
         self._points: List[Point] = points
         self._color: Shader = color
+        self._distance: int = dist
 
     @property
     def points(self) -> list[Point]:
@@ -37,11 +39,21 @@ class Face2D:
         return self._points
 
     @points.setter
-    def points(self, points: list[Point]) -> None:
+    def points(self, points: list[Point], dist: int) -> None:
         self._points_num = len(points)
         if self._points_num != 3:
             raise ValueError(f"Expected 3 points, got {self._points_num}")
         self._points = points
+        self._distance = dist
+
+    @property
+    def distance(self) -> int:
+        """
+        Property to get/set points value of point
+        Returns:
+            int: distance
+        """
+        return self._distance
 
     @property
     def color(self) -> Shader:
@@ -56,15 +68,54 @@ class Face2D:
     def color(self, color: Shader) -> None:
         self._color = color
 
-    def __eq__(self, other: object) -> bool:
-        """Equality checker
+    def __lt__(self, other: object) -> bool:
+        """less then  checker
 
         Args:
-            other (Shape): other Points to compare with.
+            other (Face3D): other Points to compare with.
 
         Returns:
-            bool: True if this object points are equal to the other's
+            bool: True if this object distance is less than to the other's
         """
         if not isinstance(other, Face2D):
             raise NotImplementedError
-        return self._points == other.points
+        return self._distance < other._distance
+
+    def __gt__(self, other: object) -> bool:
+        """greater then checker
+
+        Args:
+            other (Face3D): other Points to compare with.
+
+        Returns:
+            bool: True if this object distance is greater than to the other's
+        """
+        if not isinstance(other, Face2D):
+            raise NotImplementedError
+        return self._distance > other._distance
+
+    def __ge__(self, other: object) -> bool:
+        """greater then checker
+
+        Args:
+            other (Face3D): other Points to compare with.
+
+        Returns:
+            bool: True if this object distance is greater than to the other's
+        """
+        if not isinstance(other, Face2D):
+            raise NotImplementedError
+        return self._distance >= other._distance
+
+    def __le__(self, other: object) -> bool:
+        """greater then checker
+
+        Args:
+            other (Face2D): other Points to compare with.
+
+        Returns:
+            bool: True if this object distance is greater than to the other's
+        """
+        if not isinstance(other, Face2D):
+            raise NotImplementedError
+        return self._distance <= other._distance

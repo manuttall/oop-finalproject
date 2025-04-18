@@ -5,6 +5,7 @@ from geometry.point import Point
 from geometry.vertex import Vertex
 from geometry.vector import Vector
 from geometry.face3d import Face3D
+from geometry.face2d import Face2D
 from scene.aspect_ratio import AspectRatio
 
 __author__ = "Michael Nuttall"
@@ -113,45 +114,7 @@ class Camera(Vertex):
         """
         return self._aspect_ratio
 
-    def project_vertex_to_point(self, vertex: Vertex) -> Point | None:
-        """Projects a 3D vertex onto the camera's 2D canvas space.
-
-        This uses a perspective projection and maps the resulting coordinates
-        to canvas space using the camera's aspect ratio and resolution.
-
-        Args:
-            vertex (Vertex): the 3D point to project
-
-        Returns:
-            Point | None: the corresponding 2D point on the canvas,
-                        or None if the point is behind the camera
-        """
-        # Compute vector from camera to the vertex
-        to_vertex: Vector = vertex - self  # Vector from camera origin to vertex
-
-        # Project onto camera's coordinate frame
-        x_cam = to_vertex.dot(self._right)
-        y_cam = to_vertex.dot(self._up)
-        z_cam = to_vertex.dot(self._forward)  # positive if in front
-
-        if z_cam <= 0:
-            return None  # Vertex is behind the camera
-
-        # Perspective divide
-        x_proj = x_cam / z_cam
-        y_proj = y_cam / z_cam
-
-        # Canvas scaling
-        h = self._aspect_ratio.horizontal
-        v = self._aspect_ratio.vertical
-        s = self._resolution
-
-        x_canvas = int((x_proj + h / 2) * s)
-        y_canvas = int((-y_proj + v / 2) * s)
-
-        return Point(x_canvas, y_canvas)
-
-    def is_in_front(self, vertex: Vertex) -> bool:
+    def is_vertex_in_front(self, vertex: Vertex) -> bool:
         """Checks if a given 3D vertex is in front of the camera.
 
         A point is considered in front if the dot product between the
@@ -175,4 +138,57 @@ class Camera(Vertex):
         Returns:
             bool: True if any vertex is in front of the camera
         """
-        return any(self.is_in_front(vertex) for vertex in face.points)
+        return any(self.is_vertex_in_front(vertex) for vertex in face.points)
+
+    def project_vertex(self, vertex: Vertex) -> Point:
+        """Projects a 3D vertex onto the camera's 2D canvas space.
+
+        This uses a perspective projection and maps the resulting coordinates
+        to canvas space using the camera's aspect ratio and resolution.
+
+        Args:
+            vertex (Vertex): the 3D point to project
+
+        Returns:
+            Point: the corresponding 2D point on the canvas
+        """
+        # Compute vector from camera to the vertex
+        to_vertex: Vector = vertex - self  # Vector from camera origin to vertex
+
+        # Project onto camera's coordinate frame
+        x_cam = to_vertex.dot(self._right)
+        y_cam = to_vertex.dot(self._up)
+        z_cam = to_vertex.dot(self._forward)
+
+        # Perspective divide (assumes z_cam is positive and checked externally)
+        x_proj = x_cam / z_cam
+        y_proj = y_cam / z_cam
+
+        # Canvas scaling
+        # h = self._aspect_ratio.horizontal
+        # v = self._aspect_ratio.vertical
+        # s = self._resolution
+        #
+        # x_canvas = int((x_proj + h / 2) * s)
+        # y_canvas = int((-y_proj + v / 2) * s)
+
+        return Point(x_proj, y_proj)
+
+    def project_face(self, face: Face3D) -> Face2D | None:
+        """Projects a 3D face onto the camera's 2D canvas.
+
+        Args:
+            face (Face3D): the 3D triangle to project
+
+        Returns:
+            Face2D: the 2D projection of the face
+        """
+        projected_points: list[Point] = [
+            self.project_vertex(vertex) for vertex in face.points
+        ]
+
+        # Use Face3D's distance from the camera origin
+        dist = face.distance(self)
+        color = face.color
+
+        return Face2D(projected_points, dist, color)

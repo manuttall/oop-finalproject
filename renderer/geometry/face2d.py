@@ -39,7 +39,7 @@ class Face2D:
         return self._points
 
     @points.setter
-    def points(self, points: list[Point], dist: int) -> None:
+    def points(self, points: list[Point], dist: float) -> None:
         self._points_num = len(points)
         if self._points_num != 3:
             raise ValueError(f"Expected 3 points, got {self._points_num}")

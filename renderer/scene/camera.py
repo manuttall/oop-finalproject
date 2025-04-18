@@ -1,12 +1,7 @@
 """Camera class for defining a viewpoint in 3D space."""
 
 from __future__ import annotations
-from geometry.point import Point
-from geometry.vertex import Vertex
-from geometry.vector import Vector
-from geometry.face3d import Face3D
-from geometry.face2d import Face2D
-from scene.aspect_ratio import AspectRatio
+from geometry import *
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/16"

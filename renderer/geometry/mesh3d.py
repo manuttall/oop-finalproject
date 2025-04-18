@@ -27,7 +27,7 @@ class Mesh3D:
         """Property to get faces
 
         Returns:
-            int: r
+            list[Face3d] : faces
         """
         return self._faces
 
@@ -44,7 +44,7 @@ class Mesh3D:
         """Changes the color for every face in the mesh
 
         Args:
-            value (List[Face3D]): faces
+            value Shader
         """
         for face in self._faces:
             face.color(value)
@@ -55,5 +55,4 @@ class Mesh3D:
         Args:
             new_face (Face3D): new face to add
         """
-        position = len(self.faces)
-        self._faces[position] = new_face
+        self._faces.append(new_face)

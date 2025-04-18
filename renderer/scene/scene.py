@@ -45,5 +45,4 @@ class Scene:
         Args:
             new_face (Mesh3D): new face to add
         """
-        position = len(self.meshes)
-        self._meshes[position] = new_mesh
+        self._meshes.append(new_mesh)

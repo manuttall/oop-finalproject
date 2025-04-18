@@ -1,7 +1,7 @@
 """Camera class for defining a viewpoint in 3D space."""
 
 from __future__ import annotations
-from geometry import Face3D, Face2D, Vector, Vertex, Point, Shader, Mesh3D
+from geometry import Face3D, Face2D, Vector, Vertex, Point, Shader
 from scene.aspect_ratio import AspectRatio
 
 __author__ = "Michael Nuttall"
@@ -46,11 +46,11 @@ class Camera(Vertex):
         The up vector is perpendicular to both the right and forward vectors.
         All vectors are normalized.
         """
-        forward = (self._look_at - self).normalize()
+        forward: Vector = (self._look_at - self).normalize()
         world_up = Vector(0, 1, 0)
 
-        right = forward.cross(world_up).normalize()
-        up = right.cross(forward).normalize()
+        right: Vector = forward.cross(world_up).normalize()
+        up: Vector = right.cross(forward).normalize()
 
         self._forward = forward
         self._right = right
@@ -184,7 +184,8 @@ class Camera(Vertex):
         ]
 
         # Use Face3D's distance from the camera origin
-        dist = face.distance(self)
-        color = face.color
+        dist: float = face.distance(self)
+        # Preserve face Shader
+        color: Shader = face.color
 
         return Face2D(projected_points, dist, color)

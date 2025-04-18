@@ -14,7 +14,7 @@ from geometry.shader import Shader
 class Face2D:
     """A face2D of the form face made of point in a the Cartesian plane.
     """
-    def __init__(self, points: List[Point], dist: int, color: Shader) -> None:
+    def __init__(self, points: List[Point], dist: float, color: Shader) -> None:
         """The constructor for face2d
 
         Args:
@@ -27,7 +27,7 @@ class Face2D:
             raise ValueError(f"Expected 3 points, got {self._points_num}")
         self._points: List[Point] = points
         self._color: Shader = color
-        self._distance: int = dist
+        self._distance: float = dist
 
     @property
     def points(self) -> list[Point]:
@@ -47,11 +47,11 @@ class Face2D:
         self._distance = dist
 
     @property
-    def distance(self) -> int:
+    def distance(self) -> float:
         """
-        Property to get/set points value of point
+        Property to get points value of point
         Returns:
-            int: distance
+            float: distance
         """
         return self._distance
 
@@ -72,7 +72,7 @@ class Face2D:
         """less then  checker
 
         Args:
-            other (Face3D): other Points to compare with.
+            other (Face2D): other Points to compare with.
 
         Returns:
             bool: True if this object distance is less than to the other's
@@ -85,7 +85,7 @@ class Face2D:
         """greater then checker
 
         Args:
-            other (Face3D): other Points to compare with.
+            other (Face2D): other Points to compare with.
 
         Returns:
             bool: True if this object distance is greater than to the other's
@@ -98,7 +98,7 @@ class Face2D:
         """greater then checker
 
         Args:
-            other (Face3D): other Points to compare with.
+            other (Face2D): other Points to compare with.
 
         Returns:
             bool: True if this object distance is greater than to the other's

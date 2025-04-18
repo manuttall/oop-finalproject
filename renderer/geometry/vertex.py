@@ -7,8 +7,8 @@ __version__ = "0.1.0"
 __maintainer__ = "Michael Nuttall"
 
 
-from geometry.point import Point
 import math
+from geometry.point import Point
 
 
 class Vertex(Point):

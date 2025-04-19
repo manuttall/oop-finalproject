@@ -1,14 +1,14 @@
 """Vertex class to represent a vertex in 3D space"""
 
+from __future__ import annotations
+import math
+from geometry import Point, Vector
+
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/07"
 __license__ = "MIT"
 __version__ = "0.1.0"
 __maintainer__ = "Michael Nuttall"
-
-
-import math
-from geometry.point import Point
 
 
 class Vertex(Point):
@@ -42,6 +42,25 @@ class Vertex(Point):
             value (int): z
         """
         self._z = value
+
+    def __add__(self, other: Vector) -> Vertex:
+        """Add a vector to this vertex to get a new vertex."""
+        if isinstance(other, Vector):
+            return Vertex(self._x + other.x, self._y + other.y, self._z + other.z)
+        return NotImplemented
+
+    def __sub__(self, other: Vertex | Vector) -> Vector | Vertex:
+        """Subtract another vertex or vector.
+
+        Returns:
+            Vector: if subtracting another Vertex
+            Vertex: if subtracting a Vector
+        """
+        if isinstance(other, Vertex):
+            return Vector(self._x - other.x, self._y - other.y, self._z - other.z)
+        elif isinstance(other, Vector):
+            return Vertex(self._x - other.x, self._y - other.y, self._z - other.z)
+        return NotImplemented
 
     def __eq__(self, other: object) -> bool:
         """Equality checker

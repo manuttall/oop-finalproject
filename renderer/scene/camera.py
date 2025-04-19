@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 from geometry import Face3D, Face2D, Vector, Vertex, Point, Shader
-from scene.aspect_ratio import AspectRatio
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/16"
@@ -14,22 +13,16 @@ __maintainer__ = "Michael Nuttall"
 class Camera(Vertex):
     """A camera defined by its position and orientation in 3D space."""
 
-    def __init__(self, origin: Vertex, look_at: Vertex,
-                 aspect_ratio: AspectRatio, resolution: int) -> None:
+    def __init__(self, origin: Vertex, look_at: Vertex) -> None:
         """Constructor
 
         Args:
             origin (Vertex): the camera's position in 3D space
             look_at (Vertex): the point the camera is looking at
-            aspect_ratio (AspectRatio): object containing vertical and horizontal aspect
-            resolution (int): resolution multiplier for converting
-                              projected coordinates to canvas space
         """
         super().__init__(origin.x, origin.y, origin.z)
 
         self._look_at = look_at
-        self._aspect_ratio = aspect_ratio
-        self._resolution = resolution
 
         self._forward: Vector = Vector(0, 0, -1)
         self._up: Vector = Vector(0, 1, 0)
@@ -91,24 +84,6 @@ class Camera(Vertex):
             Vector: normalized right vector
         """
         return self._right
-
-    @property
-    def resolution(self) -> int:
-        """Returns the resolution multiplier used for canvas scaling.
-
-        Returns:
-            int: resolution value
-        """
-        return self._resolution
-
-    @property
-    def aspect_ratio(self) -> AspectRatio:
-        """Returns the camera's aspect ratio.
-
-        Returns:
-            AspectRatio: the stored aspect ratio object
-        """
-        return self._aspect_ratio
 
     def is_vertex_in_front(self, vertex: Vertex) -> bool:
         """Checks if a given 3D vertex is in front of the camera.

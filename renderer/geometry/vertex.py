@@ -1,8 +1,12 @@
 """Vertex class to represent a vertex in 3D space"""
 
 from __future__ import annotations
+from typing import TYPE_CHECKING
 import math
-from geometry import Point, Vector
+from geometry import Point
+
+if TYPE_CHECKING:
+    from geometry.vector import Vector
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/07"

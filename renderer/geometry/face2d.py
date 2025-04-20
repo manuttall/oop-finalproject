@@ -19,7 +19,7 @@ class Face2D:
 
         Args:
             points_num (int): Number of points in the face
-            points = a list of points
+            points = a List of points
             dist = distance from object of importace
         """
         self._points_num = len(points)
@@ -30,7 +30,7 @@ class Face2D:
         self._distance: float = dist
 
     @property
-    def points(self) -> list[Point]:
+    def points(self) -> List[Point]:
         """
         Property to get/set points value of point
         Returns:
@@ -39,7 +39,7 @@ class Face2D:
         return self._points
 
     @points.setter
-    def points(self, points: list[Point], dist: float) -> None:
+    def points(self, points: List[Point], dist: float) -> None:
         self._points_num = len(points)
         if self._points_num != 3:
             raise ValueError(f"Expected 3 points, got {self._points_num}")

@@ -7,6 +7,7 @@ __version__ = "0.1.0"
 __maintainer__ = "Arin Hartung"
 
 from typing import List
+import random
 from geometry.face3d import Face3D
 from geometry.shader import Shader
 
@@ -48,6 +49,18 @@ class Mesh3D:
         """
         for face in self._faces:
             face.color(value)
+
+    def set_color_variance(self, value: Shader, variance: int) -> None:
+        """Changes the color for every face in the mesh
+
+        Args:
+            value Shader
+        """
+        for face in self._faces:
+            r = value.r + random.randint(1, variance)
+            g = value.g + random.randint(1, variance)
+            b = value.b + random.randint(1, variance)
+            face.color(Shader(r, g, b))
 
     def add(self, new_face: Face3D) -> None:
         """adds a face3D to the mesh list

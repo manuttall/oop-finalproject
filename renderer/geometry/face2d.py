@@ -19,7 +19,7 @@ class Face2D:
 
         Args:
             points_num (int): Number of points in the face
-            points = a List of points
+            points = a list of points
             dist = distance from object of importace
         """
         self._points_num = len(points)

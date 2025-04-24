@@ -45,7 +45,7 @@ class Screen:
         )
         self._canvas.pack()
 
-    def _translate_point(self, point: Point) -> tuple[int, int]:
+    def _translate_point(self, point: Point) -> int:
         """Converts a normalized projected Point to canvas coordinates.
 
         Args:
@@ -96,4 +96,3 @@ class Screen:
         """
         self._create_canvas()
         self._draw_faces(faces)
-        self.show()

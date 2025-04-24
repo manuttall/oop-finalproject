@@ -8,7 +8,7 @@ __maintainer__ = "Arin Hartung"
 
 from typing import List
 from geometry import Mesh3D, Face2D
-from renderer.scene.camera import Camera
+from scene.camera import Camera
 
 
 class Scene:

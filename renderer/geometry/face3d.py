@@ -19,7 +19,7 @@ class Face3D:
 
         Args:
             points_num (int): Number of points in face3D
-            points = a list of points
+            points = a List of points
             color = a shader with the color of object defult white
         """
         self._points_num = len(points)
@@ -29,7 +29,7 @@ class Face3D:
         self._color = color
 
     @property
-    def points(self) -> list[Vertex]:
+    def points(self) -> List[Vertex]:
         """
         Property to get/set points value of point
         Returns:
@@ -38,7 +38,7 @@ class Face3D:
         return self._points
 
     @points.setter
-    def points(self, points: list[Vertex]) -> None:
+    def points(self, points: List[Vertex]) -> None:
         self._points_num = len(points)
         if self._points_num != 3:
             raise ValueError(f"Expected 3 points, got {self._points_num}")

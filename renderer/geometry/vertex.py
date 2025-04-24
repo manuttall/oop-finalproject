@@ -3,10 +3,10 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 import math
-from geometry import Point
+from .point import Point
 
 if TYPE_CHECKING:
-    from geometry.vector import Vector
+    from .vector import Vector
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/07"
@@ -47,24 +47,19 @@ class Vertex(Point):
         """
         self._z = value
 
-    def __add__(self, other: Vector) -> Vertex:
-        """Add a vector to this vertex to get a new vertex."""
-        if isinstance(other, Vector):
-            return Vertex(self._x + other.x, self._y + other.y, self._z + other.z)
-        return NotImplemented
+    def __sub__(self, other: Vertex) -> "Vector":
+        """Subtract another Vertex to get the displacement Vector.
 
-    def __sub__(self, other: Vertex | Vector) -> Vector | Vertex:
-        """Subtract another vertex or vector.
+        Args:
+            other (Vertex): another Vertex Q
 
         Returns:
-            Vector: if subtracting another Vertex
-            Vertex: if subtracting a Vector
+            Vector: displacement Vector from Q to P
         """
-        if isinstance(other, Vertex):
-            return Vector(self._x - other.x, self._y - other.y, self._z - other.z)
-        elif isinstance(other, Vector):
-            return Vertex(self._x - other.x, self._y - other.y, self._z - other.z)
-        return NotImplemented
+        if not isinstance(other, Vertex):
+            return NotImplemented
+        from .vector import Vector
+        return Vector(self._x - other.x, self._y - other.y, self._z - other.z)
 
     def __eq__(self, other: object) -> bool:
         """Equality checker

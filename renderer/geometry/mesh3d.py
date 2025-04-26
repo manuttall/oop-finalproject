@@ -48,7 +48,7 @@ class Mesh3D:
             value Shader
         """
         for face in self._faces:
-            face.color(value)
+            face.color = value
 
     def set_color_variance(self, value: Shader, variance: int = 25) -> None:
         """Changes the color for every face in the mesh
@@ -63,7 +63,7 @@ class Mesh3D:
             g = max(0, min((value.g + random.randint(-1*variance, variance)), 255))
             b = max(0, min((value.b + random.randint(-1*variance, variance)), 255))
 
-            face.color(Shader(r, g, b))
+            face.color = Shader(r, g, b)
 
     def add(self, new_face: Face3D) -> None:
         """adds a face3D to the mesh list

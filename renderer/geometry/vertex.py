@@ -3,7 +3,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 import math
-from .point import Point
+from geometry.point import Point
 
 if TYPE_CHECKING:
     from .vector import Vector

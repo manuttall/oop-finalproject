@@ -72,3 +72,11 @@ class Mesh3D:
             new_face (Face3D): new face to add
         """
         self._faces.append(new_face)
+
+    # A test string function for testing
+    def __str__(self) -> str:
+        facestr = ''
+        for face in self._faces:
+            facestr += (' ' + str(face.color.r) + ','
+                        + str(face.color.g) + ',' + str(face.color.b))
+        return str(len(self._faces)) + ' +' + facestr

@@ -21,7 +21,7 @@ class Mesh3D:
         Args:
             faces (List[Face3D]): a list of faces in Mesh
         """
-        self._faces = faces
+        self._faces: List[Face3D] = faces
 
     @property
     def faces(self) -> List[Face3D]:
@@ -48,7 +48,7 @@ class Mesh3D:
             value Shader
         """
         for face in self._faces:
-            face.color(value)
+            face.color = value
 
     def set_color_variance(self, value: Shader, variance: int = 25) -> None:
         """Changes the color for every face in the mesh
@@ -62,8 +62,8 @@ class Mesh3D:
             r = max(0, min((value.r + random.randint(-1*variance, variance)), 255))
             g = max(0, min((value.g + random.randint(-1*variance, variance)), 255))
             b = max(0, min((value.b + random.randint(-1*variance, variance)), 255))
-
-            face.color(Shader(r, g, b))
+            val: Shader = Shader(r, g, b)
+            face.color = val
 
     def add(self, new_face: Face3D) -> None:
         """adds a face3D to the mesh list
@@ -72,3 +72,11 @@ class Mesh3D:
             new_face (Face3D): new face to add
         """
         self._faces.append(new_face)
+
+    # A test string function for testing
+    def __str__(self) -> str:
+        facestr = ''
+        for face in self._faces:
+            facestr += (' ' + str(face.color.r) + ','
+                        + str(face.color.g) + ',' + str(face.color.b))
+        return str(len(self._faces)) + ' +' + facestr

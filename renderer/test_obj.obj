@@ -1,0 +1,29 @@
+#Mesh count:
+2
+
+#RGB on mesh
+255 255 255
+
+#Faces count in mesh 1
+2
+
+# Face 1 vertex 
+v 0 0 0
+v 1 0 0
+v 0 1 0
+
+#Face 2 vertex 
+v 0 0 0
+v 3 0 0
+v 0 3 0
+
+#RGB on mesh 2
+255 255 255
+
+#Faces in mesh 2
+1
+
+# Face 1 vertex 
+v 0 0 0
+v 2 0 0
+v 0 2 0

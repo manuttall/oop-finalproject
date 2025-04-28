@@ -45,7 +45,7 @@ class Screen:
         )
         self._canvas.pack()
 
-    def _translate_point(self, point: Point) -> int:
+    def _translate_point(self, point: Point) -> Point:
         """Converts a normalized projected Point to canvas-space Point.
 
         Args:

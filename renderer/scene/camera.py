@@ -1,6 +1,7 @@
 """Camera class for defining a viewpoint in 3D space."""
 
 from __future__ import annotations
+from typing import List
 from geometry import Face3D, Face2D, Vector, Vertex, Point, Shader
 
 __author__ = "Michael Nuttall"
@@ -44,7 +45,7 @@ class Camera(Vertex):
         world_up = Vector(0, 1, 0)
         # If forward is parallel or antiparallel to world_up, use a fallback up vector
         if abs(forward.dot(world_up)) >= 0.999:  # Allow small epsilon
-            world_up = Vector(0, 0, 1)  # Use a different up vector to prevent degeneracy
+            world_up = Vector(0, 0, 1)  # Use a different up vector if world up fails
 
         print(temp_vec.x, temp_vec.y, temp_vec.z)
         print(self.x, self.y, self.z)
@@ -162,7 +163,7 @@ class Camera(Vertex):
         Returns:
             Face2D: the 2D projection of the face
         """
-        projected_points: list[Point] = [
+        projected_points: List[Point] = [
             self.project_vertex(vertex) for vertex in face.points
         ]
 

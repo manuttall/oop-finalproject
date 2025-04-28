@@ -46,17 +46,17 @@ class Screen:
         self._canvas.pack()
 
     def _translate_point(self, point: Point) -> int:
-        """Converts a normalized projected Point to canvas coordinates.
+        """Converts a normalized projected Point to canvas-space Point.
 
         Args:
             point (Point): projected point in camera space
 
         Returns:
-            tuple[int, int]: pixel coordinates for canvas
+            Point: pixel coordinates for canvas
         """
         x_canvas = int((point.x + self._aspect_ratio.horizontal / 2) * self._resolution)
         y_canvas = int((-point.y + self._aspect_ratio.vertical / 2) * self._resolution)
-        return x_canvas, y_canvas
+        return Point(x_canvas, y_canvas)
 
     def _draw_face(self, face: Face2D) -> None:
         """Draws a single Face2D triangle on the canvas.
@@ -64,7 +64,8 @@ class Screen:
         Args:
             face (Face2D): the face to draw
         """
-        coords = [self._translate_point(p) for p in face.points]
+        translated_points = [self._translate_point(p) for p in face.points]
+        coords = [(p.x, p.y) for p in translated_points]
         self._canvas.create_polygon(
             coords,
             fill=face.color.hex,

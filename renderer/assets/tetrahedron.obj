@@ -1,0 +1,28 @@
+#Mesh count:
+1
+
+#RGB on mesh
+127 127 127
+
+#Faces count in mesh 1
+4
+
+# Face 1 vertex 
+v 0 1 0
+v -1 -1 -1
+v 1 -1 -1
+
+# Face 2 vertex 
+v 0 1 0
+v 1 -1 -1
+v 0 -1 1
+
+# Face 3 vertex 
+v 0 1 0
+v 0 -1 1
+v -1 -1 -1
+
+# Face 4 vertex 
+v -1 -1 -1
+v 0 -1 1
+v 1 -1 -1

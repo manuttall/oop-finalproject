@@ -15,7 +15,7 @@ from geometry.shader import Shader
 
 
 class Mesh3D:
-    """Mesh3D class to store a list of faces, with a base shader and variance."""
+    """Mesh3D class to store a list of faces with a base shader and variance."""
 
     def __init__(self, faces: List[Face3D]) -> None:
         """Constructor

@@ -42,10 +42,10 @@ class Camera(Vertex):
         """
         temp_vec = Vector(self._look_at.x, self._look_at.y, self._look_at.z)
         forward: Vector = (temp_vec - self).normalize()
-        world_up = Vector(0, 1, 0)
+        world_up = Vector(0, 0, 1)
         # If forward is parallel or antiparallel to world_up, use a fallback up vector
         if abs(forward.dot(world_up)) >= 0.999:  # Allow small epsilon
-            world_up = Vector(0, 0, 1)  # Use a different up vector if world up fails
+            world_up = Vector(0, 1, 0)  # Use a different up vector if world up fails
 
         print(temp_vec.x, temp_vec.y, temp_vec.z)
         print(self.x, self.y, self.z)

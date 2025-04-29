@@ -51,7 +51,7 @@ class Engine:
         for mesh in meshes:
             mesh.set_color_variance(mesh.base_shader, settings["variance"])
 
-        camera = Camera(Vertex(*settings["camera_origin"]), 
+        camera = Camera(Vertex(*settings["camera_origin"]),
                         Vertex(*settings["look_at"]))
 
         self._scene = Scene(camera, meshes)

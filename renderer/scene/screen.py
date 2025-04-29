@@ -15,7 +15,7 @@ __maintainer__ = "Michael Nuttall"
 class Screen:
     """A screen to render 2D triangles (Face2D) on a Tkinter canvas."""
 
-    def __init__(self, aspect_ratio: AspectRatio, resolution: int, 
+    def __init__(self, aspect_ratio: AspectRatio, resolution: int,
                  background: Shader = Shader(0, 0, 0)) -> None:
         """Constructor
 

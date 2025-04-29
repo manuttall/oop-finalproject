@@ -14,6 +14,7 @@ from geometry.shader import Shader
 class Face2D:
     """A face2D of the form face made of point in a the Cartesian plane.
     """
+
     def __init__(self, points: List[Point], dist: float, color: Shader) -> None:
         """The constructor for face2d
 

@@ -12,6 +12,7 @@ import re
 class Shader:
     """A shader for stroing the color of faces
     """
+
     def __init__(self, *args):
         """Constructor
 
@@ -103,7 +104,7 @@ class Shader:
         return r, g, b
 
     @staticmethod
-    def rgb_to_hex(r: int, g: int,  b: int):
+    def rgb_to_hex(r: int, g: int, b: int):
         """function to make RGB values form a hex
 
         Args:

@@ -14,6 +14,7 @@ from geometry.shader import Shader
 class Face3D:
     """A face3D of the form face3D made of point in a the Cartesian plane.
     """
+
     def __init__(self, points: List[Vertex], color: Shader = Shader(0, 0, 0)) -> None:
         """The constructor for face3D
 
@@ -86,9 +87,9 @@ class Face3D:
             x_total += point.x
             y_total += point.y
             z_total += point.z
-        vx = int(x_total/self._points_num)
-        vy = int(y_total/self._points_num)
-        vz = int(z_total/self._points_num)
+        vx = int(x_total / self._points_num)
+        vy = int(y_total / self._points_num)
+        vz = int(z_total / self._points_num)
         return Vertex(vx, vy, vz)
 
     def closest_point(self, new_point: Vertex) -> Vertex:

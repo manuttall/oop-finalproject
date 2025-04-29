@@ -14,6 +14,7 @@ from scene.camera import Camera
 class Scene:
     """scene class to represent a colection of 3d Meshes
     """
+
     def __init__(self, active_cam: Camera, meshes: List[Mesh3D]):
         """constructor for Mesh3d
 

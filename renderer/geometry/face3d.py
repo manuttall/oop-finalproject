@@ -112,6 +112,21 @@ class Face3D:
         return close_point
 
     def distance(self, new_point: Vertex) -> float:
+        """Finds the distance from the Face to the given point,
+        using the average of the two farthest vertex distances
+        for painter's algorithm sorting.
+
+        Args:
+            new_point (Vertex): The point (e.g., camera) to compare with.
+
+        Returns:
+            float: distance from face to the point (avg of farthest two vertices).
+        """
+        distances = [new_point.distance(vertex) for vertex in self._points]
+        distances.sort(reverse=True)  # Sort largest to smallest
+        return (distances[0] + distances[1]) / 2  # Average of two farthest
+
+    def distance_closest(self, new_point: Vertex) -> float:
         """Finds the distance to from the Face to the given point
         Args:
             Vertex: other Point to compare with.

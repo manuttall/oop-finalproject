@@ -18,17 +18,17 @@ from utility import Interface, FileImport
 
 class Engine:
     """Engine manager class for the 3D rendering pipeline.
-       Uses the Singleton pattern."""
+
+    Enforces the Singleton pattern.
+    """
 
     _instance: Engine | None = None
 
     def __new__(cls) -> Engine:
         """Creates a new instance if one doesn't already exist.
 
-        Enforces the Singleton pattern.
-
         Returns:
-            Engine: class instance
+            Engine: Singleton instance
         """
         if cls._instance is None:
             cls._instance = super().__new__(cls)
@@ -40,10 +40,11 @@ class Engine:
         self._screen: Screen | None = None
 
     def load_scene(self, settings: dict[str, Any]) -> None:
-        """Loads scene data and initializes camera and screen based on settings.
+        """Loads scene data and initializes the camera and screen
+        based on user settings.
 
         Args:
-            settings (dict[str, Any]): Dictionary of user input parameters
+            settings (dict[str, Any]): User input parameters
         """
         file_importer = FileImport()
         meshes = file_importer.read_file(settings["filepath"])
@@ -62,7 +63,7 @@ class Engine:
         )
 
     def render_scene(self) -> None:
-        """Renders the loaded scene."""
+        """Renders the currently loaded scene."""
         if not self._scene or not self._screen:
             raise RuntimeError("Scene or screen not properly initialized.")
 
@@ -72,7 +73,7 @@ class Engine:
 
     @staticmethod
     def main() -> None:
-        """Main entry point to launch the Interface and render the scene."""
+        """Main entry point to launch the interface and render the scene."""
         interface = Interface()
         settings = interface.run()
 

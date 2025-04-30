@@ -19,62 +19,78 @@ class AspectRatio:
         """Constructor
 
         Args:
-            horizontal (float): horizontal component of the aspect ratio
-            vertical (float): vertical component of the aspect ratio
+            horizontal (float): Horizontal component of the aspect ratio.
+            vertical (float): Vertical component of the aspect ratio.
+
+        Raises:
+            ValueError: If vertical is zero.
         """
-        self._horizontal = horizontal
-        self._vertical = vertical
+        if vertical == 0:
+            raise ValueError("Vertical component cannot be zero.")
+        self._horizontal: float = horizontal
+        self._vertical: float = vertical
 
     @property
     def horizontal(self) -> float:
-        """Get the horizontal aspect ratio component.
+        """Get the horizontal component.
 
         Returns:
-            float: horizontal value
+            float: Horizontal value.
         """
         return self._horizontal
 
     @horizontal.setter
     def horizontal(self, value: float) -> None:
-        """Set the horizontal aspect ratio component.
+        """Set the horizontal component.
 
         Args:
-            value (float): new horizontal value
+            value (float): New horizontal value.
         """
         self._horizontal = value
 
     @property
     def vertical(self) -> float:
-        """Get the vertical aspect ratio component.
+        """Get the vertical component.
 
         Returns:
-            float: vertical value
+            float: Vertical value.
         """
         return self._vertical
 
     @vertical.setter
     def vertical(self, value: float) -> None:
-        """Set the vertical aspect ratio component.
+        """Set the vertical component.
 
         Args:
-            value (float): new vertical value
+            value (float): New vertical value.
+
+        Raises:
+            ValueError: If vertical is set to zero.
         """
+        if value == 0:
+            raise ValueError("Vertical component cannot be zero.")
         self._vertical = value
 
     def ratio(self) -> float:
         """Calculate and return the scalar aspect ratio (horizontal / vertical).
 
         Returns:
-            float: the scalar aspect ratio
+            float: The scalar aspect ratio.
         """
-        if self._vertical == 0:
-            raise ZeroDivisionError("Vertical aspect ratio cannot be zero.")
         return self._horizontal / self._vertical
 
-    def __repr__(self) -> str:
-        """String representation of the aspect ratio.
+    def __str__(self) -> str:
+        """User-friendly string representation.
 
         Returns:
-            str: textual form of the ratio, e.g., '4:3'
+            str: Aspect ratio as 'horizontal:vertical'.
         """
         return f"{self._horizontal}:{self._vertical}"
+
+    def __repr__(self) -> str:
+        """Developer/debugging string representation.
+
+        Returns:
+            str: Detailed AspectRatio object view.
+        """
+        return f"AspectRatio(horizontal={self._horizontal}, vertical={self._vertical})"

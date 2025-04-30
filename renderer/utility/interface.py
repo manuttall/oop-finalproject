@@ -20,7 +20,7 @@ class Interface:
     """Interface to gather user input for configuring the 3D Engine."""
 
     def __init__(self) -> None:
-        """Constructor"""
+        """Constructor."""
         self._root = tk.Tk()
         self._root.title("3D Engine - Load Scene")
         self._root.configure(bg="#f0f0f0")
@@ -28,33 +28,32 @@ class Interface:
         self._setup_widgets()
         self._center_window(400, 520)
 
-    def _on_enter(self, event: tk.Event) -> None:
+    def _on_enter(self, event: tk.Event[Any]) -> None:
         """Handles mouse hover event on the Render button.
 
-        Changes the background color to a slightly darker blue
-        to indicate that the button is active.
+        Changes the background color to a slightly darker blue.
 
         Args:
-            event (tk.Event): Tkinter event triggered by mouse entering the button area.
+            event (tk.Event[Any]): Tkinter event triggered by mouse entering.
         """
-        event.widget.config(bg="#1C86EE")  # Slightly darker blue when hovered
+        event.widget.config(bg="#1C86EE")
 
-    def _on_leave(self, event: tk.Event) -> None:
+    def _on_leave(self, event: tk.Event[Any]) -> None:
         """Handles mouse leave event on the Render button.
 
-        Restores the background color to its original bright blue
-        when the mouse is no longer hovering over the button.
+        Restores the background color to its original bright blue.
 
         Args:
-            event (tk.Event): Tkinter event triggered by mouse leaving the button area.
+            event (tk.Event[Any]): Tkinter event triggered by mouse leaving.
         """
-        event.widget.config(bg="#1E90FF")  # Restore original blue color
+        event.widget.config(bg="#1E90FF")
 
     def _setup_widgets(self) -> None:
         """Sets up all entry fields, labels, and the render button."""
-        padding = {'padx': 10, 'pady': 5}
+        padding: dict[str, Any] = {'padx': 10, 'pady': 5}
 
-        tk.Label(self._root, text="Enter file path:", bg="#f0f0f0").pack(**padding)
+        tk.Label(self._root, text="Enter file path:",
+                 bg="#f0f0f0").pack(**padding)
         self._entry_filepath = tk.Entry(self._root, width=50)
         self._add_placeholder(self._entry_filepath, "demo.obj")
         self._entry_filepath.pack(**padding)
@@ -62,13 +61,13 @@ class Interface:
         tk.Label(self._root, text="Camera origin (x y z):",
                  bg="#f0f0f0").pack(**padding)
         self._entry_cam_origin = tk.Entry(self._root, width=50)
-        self._add_placeholder(self._entry_cam_origin, "10 10 10")
+        self._add_placeholder(self._entry_cam_origin, "-0.7 -1 1")
         self._entry_cam_origin.pack(**padding)
 
         tk.Label(self._root, text="Camera look-at (x y z):",
                  bg="#f0f0f0").pack(**padding)
         self._entry_look_at = tk.Entry(self._root, width=50)
-        self._add_placeholder(self._entry_look_at, "0 0 0")
+        self._add_placeholder(self._entry_look_at, "0 0 0.65")
         self._entry_look_at.pack(**padding)
 
         tk.Label(self._root, text="Aspect ratio (horizontal vertical):",
@@ -77,14 +76,16 @@ class Interface:
         self._add_placeholder(self._entry_aspect, "4 3")
         self._entry_aspect.pack(**padding)
 
-        tk.Label(self._root, text="Resolution (pixels):", bg="#f0f0f0").pack(**padding)
+        tk.Label(self._root, text="Resolution (pixels):",
+                 bg="#f0f0f0").pack(**padding)
         self._entry_resolution = tk.Entry(self._root, width=20)
         self._add_placeholder(self._entry_resolution, "300")
         self._entry_resolution.pack(**padding)
 
-        tk.Label(self._root, text="Color variance:", bg="#f0f0f0").pack(**padding)
+        tk.Label(self._root, text="Color variance:",
+                 bg="#f0f0f0").pack(**padding)
         self._entry_variance = tk.Entry(self._root, width=20)
-        self._add_placeholder(self._entry_variance, "25")
+        self._add_placeholder(self._entry_variance, "10")
         self._entry_variance.pack(**padding)
 
         self._render_button = tk.Button(
@@ -109,12 +110,12 @@ class Interface:
         entry.insert(0, text)
         entry.config(fg="gray")
 
-        def on_focus_in(_event: tk.Event) -> None:
+        def on_focus_in(_event: tk.Event[Any]) -> None:
             if entry.get() == text:
                 entry.delete(0, tk.END)
                 entry.config(fg="black")
 
-        def on_focus_out(_event: tk.Event) -> None:
+        def on_focus_out(_event: tk.Event[Any]) -> None:
             if not entry.get():
                 entry.insert(0, text)
                 entry.config(fg="gray")
@@ -144,7 +145,11 @@ class Interface:
         messagebox.showerror("Input Error", message)
 
     def _collect_input(self) -> None:
-        """Collects input from user, validates it, and stores in _result."""
+        """Collects input from user, validates it, and stores in _result.
+
+        Raises:
+            ValueError: if any field is invalid.
+        """
         try:
             filepath = self._entry_filepath.get()
             if not filepath or filepath == "demo.obj":
@@ -159,11 +164,10 @@ class Interface:
             look_at = tuple(map(float, self._entry_look_at.get().split()))
             aspect = tuple(map(float, self._entry_aspect.get().split()))
             resolution = int(self._entry_resolution.get())
-            variance_str = self._entry_variance.get()
-            variance = int(variance_str) if variance_str else 25
+            variance = int(self._entry_variance.get())
 
             if len(cam_origin) != 3 or len(look_at) != 3:
-                raise ValueError("Camera origin and look-at"
+                raise ValueError("Camera origin and look-at "
                                  "must each have three numbers.")
             if len(aspect) != 2:
                 raise ValueError("Aspect ratio must have exactly two numbers.")

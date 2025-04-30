@@ -38,11 +38,10 @@ class TestFace2D(unittest.TestCase):
         self.assertEqual(self.face.points, self.points)
 
     def test_points_property_set_valid(self) -> None:
-        """Test setting points correctly updates points and distance."""
+        """Test setting points correctly updates points."""
         new_points: List[Point] = [Point(1, 1), Point(2, 2), Point(3, 3)]
-        self.face.points = (new_points, 20.0)
+        self.face.points = new_points
         self.assertEqual(self.face.points, new_points)
-        self.assertEqual(self.face.distance, 20.0)
 
     def test_points_property_set_invalid(self) -> None:
         """Test setting points raises error if not exactly 3 points."""
@@ -107,3 +106,12 @@ class TestFace2D(unittest.TestCase):
         face2 = Face2D(self.points, d, self.color)
         self.assertTrue(face1 >= face2)
         self.assertTrue(face1 <= face2)
+
+    def test_repr_contains_points_and_color(self) -> None:
+        """Test __repr__ method includes key attributes."""
+        repr_str = repr(self.face)
+        for point in self.points:
+            self.assertIn(f"{point}", repr_str)
+        for value in self.color.rgb:
+            self.assertIn(str(value), repr_str)
+        self.assertIn("distance", repr_str)

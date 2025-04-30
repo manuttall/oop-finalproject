@@ -18,38 +18,26 @@ class Camera(Vertex):
         """Constructor
 
         Args:
-            origin (Vertex): the camera's position in 3D space
-            look_at (Vertex): the point the camera is looking at
+            origin (Vertex): Camera's position in 3D space.
+            look_at (Vertex): Point the camera looks at.
         """
         super().__init__(origin.x, origin.y, origin.z)
-
-        self._look_at = look_at
-
-        self._forward: Vector = Vector(0, 0, -1)
-        self._up: Vector = Vector(0, 1, 0)
-        self._right: Vector = Vector(1, 0, 0)
+        self._look_at: Vertex = look_at
+        self._forward: Vector = Vector(0.0, 0.0, -1.0)
+        self._up: Vector = Vector(0.0, 1.0, 0.0)
+        self._right: Vector = Vector(1.0, 0.0, 0.0)
 
         self._recalculate_axes()
 
     def _recalculate_axes(self) -> None:
-        """Private method to recalculate the camera's forward, right, and up vectors.
-
-        The forward vector is the normalized direction from the
-        camera's origin to the look-at point.
-        The right vector is perpendicular to the forward and a world-up vector.
-        The up vector is perpendicular to both the right and forward vectors.
-        All vectors are normalized.
-        """
+        """Recalculates the camera's forward, right, and up vectors
+        based on current look_at."""
         temp_vec = Vector(self._look_at.x, self._look_at.y, self._look_at.z)
         forward: Vector = (temp_vec - self).normalize()
-        world_up = Vector(0, 0, 1)
-        # If forward is parallel or antiparallel to world_up, use a fallback up vector
-        if abs(forward.dot(world_up)) >= 0.999:  # Allow small epsilon
-            world_up = Vector(0, 1, 0)  # Use a different up vector if world up fails
+        world_up = Vector(0.0, 0.0, 1.0)
 
-        print(temp_vec.x, temp_vec.y, temp_vec.z)
-        print(self.x, self.y, self.z)
-        print(forward.x, forward.y, forward.z)
+        if abs(forward.dot(world_up)) >= 0.999:
+            world_up = Vector(0.0, 1.0, 0.0)
 
         right: Vector = forward.cross(world_up).normalize()
         up: Vector = right.cross(forward).normalize()
@@ -59,117 +47,95 @@ class Camera(Vertex):
         self._up = up
 
     def set_look_at(self, new_look_at: Vertex) -> None:
-        """Sets a new look-at point for the camera and updates its orientation.
+        """Sets a new look-at point for the camera and recalculates axes.
 
         Args:
-            new_look_at (Vertex): the new point the camera should look at
+            new_look_at (Vertex): New target point for the camera.
         """
         self._look_at = new_look_at
         self._recalculate_axes()
 
     @property
     def forward(self) -> Vector:
-        """Returns the forward (view direction) vector of the camera.
+        """Returns the forward (view direction) vector.
 
         Returns:
-            Vector: normalized forward vector
+            Vector: Normalized forward vector.
         """
         return self._forward
 
     @property
     def up(self) -> Vector:
-        """Returns the up vector of the camera.
+        """Returns the up vector.
 
         Returns:
-            Vector: normalized up vector
+            Vector: Normalized up vector.
         """
         return self._up
 
     @property
     def right(self) -> Vector:
-        """Returns the right vector of the camera.
+        """Returns the right vector.
 
         Returns:
-            Vector: normalized right vector
+            Vector: Normalized right vector.
         """
         return self._right
 
     def is_vertex_in_front(self, vertex: Vertex) -> bool:
-        """Checks if a given 3D vertex is in front of the camera.
-
-        A point is considered in front if the dot product between the
-        vector from the camera to the point and the forward vector is positive.
+        """Checks if a 3D vertex is in front of the camera.
 
         Args:
-            vertex (Vertex): the 3D point to check
+            vertex (Vertex): 3D vertex to check.
 
         Returns:
-            bool: True if the point is in front of the camera, False otherwise
+            bool: True if vertex is in front, else False.
         """
-        to_vertex = vertex - self
+        to_vertex: Vector = vertex - self
         return to_vertex.dot(self._forward) > 0
 
     def is_face_in_front(self, face: Face3D) -> bool:
-        """Checks if any vertex of the face is in front of the camera.
+        """Checks if any vertex of a face is in front of the camera.
 
         Args:
-            face (Face3D): a 3D face composed of vertices
+            face (Face3D): Face composed of 3 vertices.
 
         Returns:
-            bool: True if any vertex is in front of the camera
+            bool: True if any vertex is in front.
         """
         return any(self.is_vertex_in_front(vertex) for vertex in face.points)
 
     def project_vertex(self, vertex: Vertex) -> Point:
-        """Projects a 3D vertex onto the camera's 2D canvas space.
-
-        This uses a perspective projection and maps the resulting coordinates
-        to canvas space using the camera's aspect ratio and resolution.
+        """Projects a 3D vertex onto the camera's 2D space.
 
         Args:
-            vertex (Vertex): the 3D point to project
+            vertex (Vertex): 3D vertex to project.
 
         Returns:
-            Point: the corresponding 2D point on the canvas
+            Point: 2D projected point.
         """
-        # Compute vector from camera to the vertex
-        to_vertex: Vector = vertex - self  # Vector from camera origin to vertex
+        to_vertex: Vector = vertex - self
+        x_cam: float = to_vertex.dot(self._right)
+        y_cam: float = to_vertex.dot(self._up)
+        z_cam: float = to_vertex.dot(self._forward)
 
-        # Project onto camera's coordinate frame
-        x_cam = to_vertex.dot(self._right)
-        y_cam = to_vertex.dot(self._up)
-        z_cam = to_vertex.dot(self._forward)
-
-        # Perspective divide (assumes z_cam is positive and checked externally)
         x_proj = x_cam / z_cam
         y_proj = y_cam / z_cam
 
-        # Canvas scaling
-        # h = self._aspect_ratio.horizontal
-        # v = self._aspect_ratio.vertical
-        # s = self._resolution
-        #
-        # x_canvas = int((x_proj + h / 2) * s)
-        # y_canvas = int((-y_proj + v / 2) * s)
-
         return Point(x_proj, y_proj)
 
-    def project_face(self, face: Face3D) -> Face2D | None:
-        """Projects a 3D face onto the camera's 2D canvas.
+    def project_face(self, face: Face3D) -> Face2D:
+        """Projects a 3D face onto 2D space.
 
         Args:
-            face (Face3D): the 3D triangle to project
+            face (Face3D): 3D face.
 
         Returns:
-            Face2D: the 2D projection of the face
+            Face2D: 2D projection of the face.
         """
         projected_points: List[Point] = [
             self.project_vertex(vertex) for vertex in face.points
         ]
-
-        # Use Face3D's distance from the camera origin
         dist: float = face.distance(self)
-        # Preserve face Shader
         color: Shader = face.color
-
         return Face2D(projected_points, dist, color)

@@ -1,4 +1,6 @@
-"""Vertex class to represent a vertex in 3D space"""
+"""
+Vertex class to represent a vertex in 3D space.
+"""
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
@@ -18,76 +20,82 @@ __maintainer__ = "Michael Nuttall"
 class Vertex(Point):
     """A vertex of the form (x, y, z) in 3D space."""
 
-    def __init__(self, x: int, y: int, z: int) -> None:
+    def __init__(self, x: float, y: float, z: float) -> None:
         """Constructor
 
         Args:
-            x (int): coordinate along the x-axis
-            y (int): coordinate along the y-axis
-            z (int): coordinate along the z-axis
+            x (float): coordinate along the x-axis
+            y (float): coordinate along the y-axis
+            z (float): coordinate along the z-axis
         """
         super().__init__(x, y)
-        self._z: int = z
+        self._z: float = z
 
     @property
-    def z(self) -> int:
-        """Property to get z
+    def z(self) -> float:
+        """Property to get z.
 
         Returns:
-            int: z
+            float: z coordinate
         """
         return self._z
 
     @z.setter
-    def z(self, value: int) -> None:
-        """Property to set z
+    def z(self, value: float) -> None:
+        """Property to set z.
 
         Args:
-            value (int): z
+            value (float): z coordinate
         """
         self._z = value
 
-    def __sub__(self, other: Vertex) -> "Vector":
+    def __sub__(self, other: Vertex) -> Vector:
         """Subtract another Vertex to get the displacement Vector.
 
         Args:
-            other (Vertex): another Vertex Q
+            other (Vertex): another vertex
 
         Returns:
-            Vector: displacement Vector from Q to P
+            Vector: displacement vector from other to self
         """
         if not isinstance(other, Vertex):
-            return NotImplemented
+            raise TypeError("Subtraction only supported between Vertex objects.")
         from .vector import Vector
         return Vector(self._x - other.x, self._y - other.y, self._z - other.z)
 
     def __eq__(self, other: object) -> bool:
-        """Equality checker
+        """Equality checker.
 
         Args:
-            other (Vertex): other Vertex to compare with.
+            other (object): another object to compare.
 
         Returns:
-            bool: True if this vertex's coordinates are equal to the other's
+            bool: True if coordinates match
         """
         if not isinstance(other, Vertex):
-            raise NotImplementedError
+            return False
         return self._x == other.x and self._y == other.y and self._z == other.z
 
-    def distance(self, other: "Vertex") -> float:
+    def distance(self, other: Vertex) -> float:
         """Calculate the distance between this vertex and another vertex.
 
         Args:
-            other (Vertex): the other vertex to calculate the distance to.
+            other (Vertex): another vertex
 
         Returns:
-            float: the Euclidean distance between the two vertices.
+            float: Euclidean distance
         """
         if not isinstance(other, Vertex):
-            raise TypeError("The other object must be a Vertex.")
-
-        dx: int = self._x - other.x
-        dy: int = self._y - other.y
-        dz: int = self._z - other.z
-
+            raise TypeError("The argument must be a Vertex.")
+        dx: float = self._x - other.x
+        dy: float = self._y - other.y
+        dz: float = self._z - other.z
         return math.sqrt(dx ** 2 + dy ** 2 + dz ** 2)
+
+    def __repr__(self) -> str:
+        """Formal string representation of the Vertex.
+
+        Returns:
+            str: formatted as 'Vertex(x, y, z)'
+        """
+        return f"Vertex({self._x}, {self._y}, {self._z})"

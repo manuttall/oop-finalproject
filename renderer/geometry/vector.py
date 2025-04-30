@@ -1,6 +1,9 @@
-"""Vector class for vector operations in 3D space"""
+"""
+Vector class for vector operations in 3D space.
+"""
 
 from __future__ import annotations
+
 import math
 from geometry.vertex import Vertex
 
@@ -12,7 +15,7 @@ __maintainer__ = "Michael Nuttall"
 
 
 class Vector(Vertex):
-    """A vector in 3D space represented by its components (x, y, z)"""
+    """A vector in 3D space represented by its components (x, y, z)."""
 
     def __init__(self, x: float, y: float, z: float) -> None:
         """Constructor
@@ -22,21 +25,25 @@ class Vector(Vertex):
             y (float): y-component of the vector
             z (float): z-component of the vector
         """
+        # pylint: disable=useless-parent-delegation
         super().__init__(x, y, z)
 
     def magnitude(self) -> float:
-        """Returns the magnitude (length) of the vector.
+        """Calculates the magnitude (length) of the vector.
 
         Returns:
             float: magnitude
         """
-        return math.sqrt(self._x**2 + self._y**2 + self._z**2)
+        return math.sqrt(self._x ** 2 + self._y ** 2 + self._z ** 2)
 
     def normalize(self) -> Vector:
-        """Returns the unit (normalized) vector.
+        """Returns the normalized (unit) vector.
 
         Returns:
             Vector: normalized vector
+
+        Raises:
+            ValueError: if the vector is zero and cannot be normalized
         """
         mag = self.magnitude()
         if mag == 0:
@@ -47,10 +54,13 @@ class Vector(Vertex):
         """Computes the dot product with another vector.
 
         Args:
-            other (Vector): the other vector
+            other (Vector): another vector
 
         Returns:
             float: dot product
+
+        Raises:
+            TypeError: if other is not a Vector
         """
         if not isinstance(other, Vector):
             raise TypeError("Dot product requires another Vector.")
@@ -60,107 +70,125 @@ class Vector(Vertex):
         """Computes the cross product with another vector.
 
         Args:
-            other (Vector): the other vector
+            other (Vector): another vector
 
         Returns:
-            Vector: the cross product vector
+            Vector: cross product vector
+
+        Raises:
+            TypeError: if other is not a Vector
         """
         if not isinstance(other, Vector):
             raise TypeError("Cross product requires another Vector.")
-
         x = self._y * other.z - self._z * other.y
         y = self._z * other.x - self._x * other.z
         z = self._x * other.y - self._y * other.x
         return Vector(x, y, z)
 
     def __add__(self, other: Vertex) -> Vertex | Vector:
-        """Add this vector to another vector or vertex.
+        """Adds this vector to another vector or vertex.
 
         Args:
-            other (Vertex): the other vector or vertex to add
+            other (Vertex): the other operand
 
         Returns:
-            Vector | Vertex: a new Vector if the other is a Vector,
-                            a new Vertex if the other is a Vertex
+            Vertex | Vector: result
         """
         if isinstance(other, Vector):
             return Vector(self._x + other.x, self._y + other.y, self._z + other.z)
-        elif isinstance(other, Vertex):
+        if isinstance(other, Vertex):
             return Vertex(self._x + other.x, self._y + other.y, self._z + other.z)
-        return NotImplemented
+        raise TypeError("Unsupported operand type for +")
 
     def __radd__(self, other: Vertex) -> Vertex | Vector:
-        """Add this vector to another object from the right-hand side.
+        """Right-hand addition.
 
         Args:
-            other (Vertex): the left-hand operand (typically a Vertex)
+            other (Vertex): other operand
 
         Returns:
-            Vector | Vertex: the result of the addition
+            Vertex | Vector: result
         """
         return self.__add__(other)
 
     def __sub__(self, other: Vertex) -> Vector:
-        """Subtract a vector or vertex from this vector.
+        """Subtracts a vertex or vector from this vector.
 
         Args:
-            other (Vertex): the vector or vertex to subtract
+            other (Vertex): other operand
 
         Returns:
-            Vector: a new vector representing the difference
+            Vector: result
+
+        Raises:
+            TypeError: if operand is not Vertex or Vector
         """
-        if isinstance(other, Vector) or isinstance(other, Vertex):
+        if isinstance(other, Vertex):
             return Vector(self._x - other.x, self._y - other.y, self._z - other.z)
-        return NotImplemented
+        raise TypeError("Unsupported operand type for -")
 
     def __rsub__(self, other: Vertex) -> Vector:
-        """Subtract this vector from a vertex (right-hand subtraction).
+        """Right-hand subtraction.
 
         Args:
-            other (Vertex): the left-hand operand
+            other (Vertex): left-hand operand
 
         Returns:
-            Vector: a new vector representing the difference
+            Vector: result
+
+        Raises:
+            TypeError: if operand is not Vertex
         """
         if isinstance(other, Vertex):
             return Vector(other.x - self._x, other.y - self._y, other.z - self._z)
-        return NotImplemented
+        raise TypeError("Unsupported operand type for -")
 
     def __mul__(self, scalar: float) -> Vector:
-        """Multiply this vector by a scalar.
+        """Multiplies this vector by a scalar.
 
         Args:
-            scalar (float): the scalar to multiply by
+            scalar (float): multiplier
 
         Returns:
-            Vector: a new vector scaled by the given scalar
+            Vector: result
+
+        Raises:
+            TypeError: if scalar is not a number
         """
         if not isinstance(scalar, (int, float)):
-            return NotImplemented
+            raise TypeError("Can only multiply by a number.")
         return Vector(self._x * scalar, self._y * scalar, self._z * scalar)
 
     def __rmul__(self, scalar: float) -> Vector:
-        """Multiply this vector by a scalar from the left-hand side.
+        """Right-hand scalar multiplication.
 
         Args:
-            scalar (float): the scalar to multiply by
+            scalar (float): multiplier
 
         Returns:
-            Vector: a new vector scaled by the given scalar
+            Vector: result
         """
         return self.__mul__(scalar)
 
     def __eq__(self, other: object) -> bool:
-        """Check equality with another vector.
+        """Equality checker.
 
         Args:
-            other (Vector): another vector
+            other (object): other operand
 
         Returns:
             bool: True if equal
         """
         if not isinstance(other, Vector):
-            return NotImplemented
+            return False
         return (math.isclose(self._x, other.x) and
                 math.isclose(self._y, other.y) and
                 math.isclose(self._z, other.z))
+
+    def __repr__(self) -> str:
+        """Formal string representation.
+
+        Returns:
+            str: 'Vector(x, y, z)'
+        """
+        return f"Vector({self._x:.6f}, {self._y:.6f}, {self._z:.6f})"

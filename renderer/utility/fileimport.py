@@ -21,13 +21,20 @@ class FileImport:
 
     _instance: FileImport | None = None
 
+    def __new__(cls) -> FileImport:
+        """Creates a new instance if one doesn't already exist.
+
+        Enforces the Singleton pattern.
+
+        Returns:
+            FileImport: class instance
+        """
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
     def __init__(self) -> None:
         """Constructor. Enforces singleton."""
-        if FileImport._instance is not None:
-            raise NameError(
-                "Cannot create multiple instances of Singleton class FileImport."
-            )
-        FileImport._instance = self
         self._data: List[str] = []
 
     def read_data(self, filepath: str) -> None:
@@ -63,6 +70,8 @@ class FileImport:
         list_meshes: List[Mesh3D] = []
 
         for _ in range(num_meshes):
+            # def the mesh
+            mesh: Mesh3D = Mesh3D([])
             # Read RGB color
             color_parts = list(map(int, self._data[iterator].split()))
             if len(color_parts) != 3:
@@ -74,7 +83,6 @@ class FileImport:
             num_faces = int(self._data[iterator])
             iterator += 1
 
-            list_faces: List[Face3D] = []
             for _ in range(num_faces):
                 vertices: List[Vertex] = []
                 for _ in range(3):
@@ -89,9 +97,9 @@ class FileImport:
 
                 if len(vertices) != 3:
                     raise ValueError(f"Expected 3 vertices, got: {len(vertices)}")
-                list_faces.append(Face3D(vertices))
 
-            mesh = Mesh3D(list_faces)
+                Mesh3D.add(Face3D(vertices), Shader(0, 0, 0))
+
             mesh.set_color(shader)
             list_meshes.append(mesh)
 

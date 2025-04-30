@@ -21,7 +21,7 @@ class Mesh3D:
         """Constructor
 
         Args:
-            faces (List[Face3D]): a list of faces in the mesh
+            faces (List[Face3D]): List of Face3D objects in the mesh.
         """
         self._faces: List[Face3D] = faces
         self._base_shader: Shader | None = None
@@ -29,45 +29,45 @@ class Mesh3D:
 
     @property
     def faces(self) -> List[Face3D]:
-        """Property to get faces.
+        """Gets the faces of the mesh.
 
         Returns:
-            List[Face3D]: faces
+            List[Face3D]: List of faces.
         """
         return self._faces
 
     @faces.setter
     def faces(self, value: List[Face3D]) -> None:
-        """Property to set faces.
+        """Sets the faces of the mesh.
 
         Args:
-            value (List[Face3D]): faces
+            value (List[Face3D]): New list of faces.
         """
         self._faces = value
 
     @property
     def base_shader(self) -> Shader | None:
-        """Property to get the base shader of the mesh.
+        """Gets the base shader of the mesh.
 
         Returns:
-            Shader | None: base shader
+            Shader | None: The base shader if set, else None.
         """
         return self._base_shader
 
     @property
     def variance(self) -> int:
-        """Property to get the color variance.
+        """Gets the color variance.
 
         Returns:
-            int: variance
+            int: Variance value.
         """
         return self._variance
 
     def set_color(self, value: Shader) -> None:
-        """Sets every face in the mesh to the shader.
+        """Sets all faces in the mesh to a uniform shader.
 
         Args:
-            value (Shader): the shader to set
+            value (Shader): Shader color to apply to all faces.
         """
         for face in self._faces:
             face.color = value
@@ -79,19 +79,20 @@ class Mesh3D:
         """Applies random color variance around a base Shader.
 
         Args:
-            value (Shader, optional): Base color. If None, use the current base_shader.
-            variance (int, optional): Variance range. Defaults to 25.
+            value (Shader | None, optional): Base shader to vary from.
+                If None, uses the stored base_shader.
+            variance (int, optional): Color variation range. Defaults to 25.
 
         Raises:
-            ValueError: If the mesh has no faces and no base shader.
+            ValueError: If no faces exist and no base shader is available.
         """
         if value is None:
             if self._base_shader is not None:
                 value = self._base_shader
-            else:
-                if not self._faces:
-                    raise ValueError("Mesh has no faces.")
+            elif self._faces:
                 value = self._faces[0].color
+            else:
+                raise ValueError("Cannot set color variance without a base color.")
 
         self._base_shader = value
         self._variance = abs(variance)
@@ -109,18 +110,25 @@ class Mesh3D:
         """Adds a Face3D to the mesh.
 
         Args:
-            new_face (Face3D): the face to add
+            new_face (Face3D): New face to add.
         """
         self._faces.append(new_face)
 
     def __str__(self) -> str:
-        """String representation for testing.
+        """Returns a simple string representation for testing.
 
         Returns:
-            str: textual representation of face colors
+            str: String showing number of faces and their RGB colors.
         """
-        facestr = ''
-        for face in self._faces:
-            facestr += (' ' + str(face.color.r) + ',' +
-                        str(face.color.g) + ',' + str(face.color.b))
-        return str(len(self._faces)) + ' +' + facestr
+        facestr = ' '.join(f"{face.color.r},{face.color.g},{face.color.b}"
+                           for face in self._faces)
+        return f"{len(self._faces)} faces: {facestr}"
+
+    def __repr__(self) -> str:
+        """Returns a detailed string representation for debugging.
+
+        Returns:
+            str: Detailed Mesh3D description.
+        """
+        return (f"Mesh3D(num_faces={len(self._faces)}, "
+                f"base_shader={self._base_shader}, variance={self._variance})")

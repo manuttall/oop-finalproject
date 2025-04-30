@@ -1,4 +1,6 @@
-"""Face class to represent a Face in the Cartesian plane made of points"""
+"""Face3D class to represent a triangular face in 3D space."""
+
+from __future__ import annotations
 
 __author__ = "Arin Hartung"
 __date__ = "2025/04/09"
@@ -12,127 +14,146 @@ from geometry.shader import Shader
 
 
 class Face3D:
-    """A face3D of the form face3D made of point in a the Cartesian plane.
-    """
+    """A triangular face made of 3 vertices in 3D space."""
 
     def __init__(self, points: List[Vertex], color: Shader = Shader(0, 0, 0)) -> None:
-        """The constructor for face3D
+        """Constructor
 
         Args:
-            points_num (int): Number of points in face3D
-            points = a List of points
-            color = a shader with the color of object defult white
+            points (List[Vertex]): List of exactly 3 vertices.
+            color (Shader, optional): Face color. Defaults to black.
+
+        Raises:
+            ValueError: If points list does not have exactly 3 vertices.
         """
-        self._points_num = len(points)
-        if self._points_num != 3:
-            raise ValueError(f"Expected 3 points, got {self._points_num}")
+        if len(points) != 3:
+            raise ValueError(f"Expected 3 points, got {len(points)}.")
         self._points: List[Vertex] = points
-        self._color = color
+        self._color: Shader = color
 
     @property
     def points(self) -> List[Vertex]:
-        """
-        Property to get/set points value of point
+        """Property to get points.
+
         Returns:
-            List[points]: points
+            List[Vertex]: Vertices defining the face.
         """
         return self._points
 
     @points.setter
     def points(self, points: List[Vertex]) -> None:
-        self._points_num = len(points)
-        if self._points_num != 3:
-            raise ValueError(f"Expected 3 points, got {self._points_num}")
+        """Property to set points.
+
+        Args:
+            points (List[Vertex]): List of exactly 3 vertices.
+
+        Raises:
+            ValueError: If points list does not have exactly 3 vertices.
+        """
+        if len(points) != 3:
+            raise ValueError(f"Expected 3 points, got {len(points)}.")
         self._points = points
 
     @property
     def color(self) -> Shader:
-        """
-        Property to get/set color shader
+        """Property to get color.
+
         Returns:
-            Shader: color
+            Shader: Face color.
         """
         return self._color
 
     @color.setter
     def color(self, color: Shader) -> None:
+        """Property to set color.
+
+        Args:
+            color (Shader): Face color.
+        """
         self._color = color
 
     def __eq__(self, other: object) -> bool:
-        """Equality checker
+        """Equality checker.
 
         Args:
-            other (Face3D): other Points to compare with.
+            other (object): Other face to compare.
 
         Returns:
-            bool: True if this object points are equal to the other's
+            bool: True if points match.
         """
         if not isinstance(other, Face3D):
-            raise NotImplementedError
+            return NotImplemented
         return self._points == other.points
 
-    def centroid(self):
-        """Finds the centroid of the face3D
-
-        Args:
-            none
+    def centroid(self) -> Vertex:
+        """Calculates the centroid (average position) of the face.
 
         Returns:
-            Vertex : the mid point of the face3D
+            Vertex: Centroid of the face.
         """
-        x_total = 0
-        y_total = 0
-        z_total = 0
-        for point in self._points:
-            x_total += point.x
-            y_total += point.y
-            z_total += point.z
-        vx = int(x_total / self._points_num)
-        vy = int(y_total / self._points_num)
-        vz = int(z_total / self._points_num)
-        return Vertex(vx, vy, vz)
+        x_total = sum(p.x for p in self._points)
+        y_total = sum(p.y for p in self._points)
+        z_total = sum(p.z for p in self._points)
+
+        return Vertex(
+            x_total / 3,
+            y_total / 3,
+            z_total / 3
+        )
 
     def closest_point(self, new_point: Vertex) -> Vertex:
-        """Finds the Closet Point to a Given Point
-            including the posiblity of the mid point
-            also sets the distance of the private var
+        """Finds the closest point on the face to a given vertex.
+
+        Includes comparing centroid and vertices.
+
         Args:
-            Vertex: other Point to compare with.
+            new_point (Vertex): Point to compare.
 
         Returns:
-            Vertex: the closet point to given point
+            Vertex: Closest point.
         """
-        close_point = self.centroid()
-        delta = close_point.distance(new_point)
+        close_point: Vertex = self.centroid()
+        min_distance: float = close_point.distance(new_point)
 
-        for point in self._points:
-            new_delta = point.distance(new_point)
-            if new_delta < delta:
-                delta = new_delta
-                close_point = point
+        for vertex in self._points:
+            dist = vertex.distance(new_point)
+            if dist < min_distance:
+                close_point = vertex
+                min_distance = dist
+
         return close_point
 
     def distance(self, new_point: Vertex) -> float:
-        """Finds the distance from the Face to the given point,
-        using the average of the two farthest vertex distances
-        for painter's algorithm sorting.
+        """Calculates approximate distance from the face to a point.
+
+        Uses the average of the two farthest vertex distances
+        (useful for painter's algorithm sorting).
 
         Args:
-            new_point (Vertex): The point (e.g., camera) to compare with.
+            new_point (Vertex): Point to measure from.
 
         Returns:
-            float: distance from face to the point (avg of farthest two vertices).
+            float: Distance estimate.
         """
         distances = [new_point.distance(vertex) for vertex in self._points]
-        distances.sort(reverse=True)  # Sort largest to smallest
-        return (distances[0] + distances[1]) / 2  # Average of two farthest
+        distances.sort(reverse=True)
+        return (distances[0] + distances[1]) / 2
 
     def distance_closest(self, new_point: Vertex) -> float:
-        """Finds the distance to from the Face to the given point
+        """Calculates distance to the closest point on the face.
+
         Args:
-            Vertex: other Point to compare with.
+            new_point (Vertex): Point to compare.
 
         Returns:
-            float: the distance from point to given point
+            float: Distance to closest point.
         """
         return new_point.distance(self.closest_point(new_point))
+
+    def __repr__(self) -> str:
+        """Formal string representation.
+
+        Returns:
+            str: Face3D(points=..., color=...)
+        """
+        return f"Face3D(points={self._points}, color={self._color})"

@@ -1,4 +1,6 @@
-"""scene class to represent a colection of 3d Meshes"""
+"""Scene class to represent a collection of 3D meshes."""
+
+from __future__ import annotations
 
 __author__ = "Arin Hartung"
 __date__ = "2025/04/17"
@@ -12,73 +14,74 @@ from scene.camera import Camera
 
 
 class Scene:
-    """scene class to represent a colection of 3d Meshes
-    """
+    """Scene class to represent a collection of 3D meshes."""
 
-    def __init__(self, active_cam: Camera, meshes: List[Mesh3D]):
-        """constructor for Mesh3d
+    def __init__(self, active_cam: Camera, meshes: List[Mesh3D]) -> None:
+        """Constructor
 
         Args:
-            meshes (List[Mesh3D]): a list of meshes in the Scene
+            active_cam (Camera): The active camera for rendering.
+            meshes (List[Mesh3D]): List of 3D meshes in the scene.
         """
-        self._active_cam = active_cam
-        self._meshes = meshes
+        self._active_cam: Camera = active_cam
+        self._meshes: List[Mesh3D] = meshes
 
     @property
     def meshes(self) -> List[Mesh3D]:
-        """Property to get meshes
+        """Property to get all meshes in the scene.
 
         Returns:
-            list [Mesh3D] - meshes
+            List[Mesh3D]: Meshes in the scene.
         """
         return self._meshes
 
     @meshes.setter
     def meshes(self, value: List[Mesh3D]) -> None:
-        """Property to set meshes
+        """Property to set the meshes in the scene.
 
         Args:
-            value (List[Mesh3D]): meshes
+            value (List[Mesh3D]): New list of meshes.
         """
         self._meshes = value
 
     @property
     def active_cam(self) -> Camera:
-        """Property to get active_cam
+        """Property to get the active camera.
 
         Returns:
-            Camera - active_cam
+            Camera: Active camera for the scene.
         """
         return self._active_cam
 
     @active_cam.setter
     def active_cam(self, value: Camera) -> None:
-        """Property to set active_cam
+        """Property to set the active camera.
 
         Args:
-            value (Camera): active_cam
+            value (Camera): New active camera.
         """
         self._active_cam = value
 
     def add(self, new_mesh: Mesh3D) -> None:
-        """adds a Mesh3D to the mesh list
+        """Adds a new mesh to the scene.
 
         Args:
-            new_face (Mesh3D): new face to add
+            new_mesh (Mesh3D): New mesh to add.
         """
         self._meshes.append(new_mesh)
 
     def make_render(self) -> List[Face2D]:
-        """makes a Face 2d render list from active cam
-        and meshes then returns it
+        """Creates a render list of 2D faces from visible 3D meshes.
+
+        Projects visible faces onto 2D space based on camera view.
 
         Returns:
-            List[Face2D]: Face 2d render list
+            List[Face2D]: List of 2D projected faces.
         """
         render_list: List[Face2D] = []
         for mesh in self._meshes:
             for face in mesh.faces:
-                if self.active_cam.is_face_in_front(face):
-                    render_mesh: Face2D = self.active_cam.project_face(face)
+                if self._active_cam.is_face_in_front(face):
+                    render_mesh: Face2D = self._active_cam.project_face(face)
                     render_list.append(render_mesh)
         return render_list

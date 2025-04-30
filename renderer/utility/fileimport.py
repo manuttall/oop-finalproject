@@ -1,4 +1,4 @@
-"""a singleton class to open and collect data from files"""
+"""Singleton class to open and collect data from files."""
 
 from __future__ import annotations
 from typing import List
@@ -11,32 +11,31 @@ __version__ = "0.1.0"
 __maintainer__ = "Arin Hartung"
 
 
-class FileImport():
-    """A file Import class
+class FileImport:
+    """
+    A Singleton class for importing 3D geometry from files.
 
     Raises:
-        NameError: if mutible instance exist
-
-    Returns:
-        None
+        NameError: if a second instance is created.
     """
-    _instance: 'FileImport' | None = None
+
+    _instance: FileImport | None = None
 
     def __init__(self) -> None:
-        self._instance = self
-
-        if FileImport._instance:
+        """Constructor. Enforces singleton."""
+        if FileImport._instance is not None:
             raise NameError(
-                "Cannot create multiple instances of \
-                a singleton class FileImport")
+                "Cannot create multiple instances of Singleton class FileImport."
+            )
         FileImport._instance = self
-        self._data: str = ''
+        self._data: List[str] = []
 
     def read_data(self, filepath: str) -> None:
-        """reads in file data
-            ignores lines with ___
+        """
+        Reads file data into internal storage, ignoring comment lines (#).
+
         Args:
-            filepath (str): file path
+            filepath (str): Path to the input file.
         """
         with open(filepath, 'r', encoding='utf-8') as file:
             self._data = [
@@ -45,74 +44,77 @@ class FileImport():
             ]
 
     def make_list(self) -> List[Mesh3D]:
-        """Creates a mesh List from file data
+        """
+        Creates a list of Mesh3D objects from parsed data.
 
         Raises:
-            ValueError: No data
-            ValueError: 3 ints for RGB
-            ValueError: v line for vertexs
-            ValueError: must have 3 vertexes
+            ValueError: If no data loaded or format errors exist.
 
         Returns:
-            List[Mesh3D]: list of Mesh 3d from File
+            List[Mesh3D]: List of parsed meshes.
         """
         if not self._data:
-            raise ValueError("no data loaded")
+            raise ValueError("No data loaded.")
 
         iterator = 0
         num_meshes = int(self._data[iterator])
         iterator += 1
 
-        list_mesh: List[Mesh3D] = []
+        list_meshes: List[Mesh3D] = []
 
         for _ in range(num_meshes):
-            # read RGB
-            color = list(map(int, self._data[iterator].split()))
-            if len(color) != 3:
-                raise ValueError(f"Expected 3 int for RGB, got: {color}")
-            mesh_shader = Shader(color[0], color[1], color[2])
+            # Read RGB color
+            color_parts = list(map(int, self._data[iterator].split()))
+            if len(color_parts) != 3:
+                raise ValueError(f"Expected 3 ints for RGB, got: {color_parts}")
+            shader = Shader(*color_parts)
             iterator += 1
 
-            # read face count
+            # Read number of faces
             num_faces = int(self._data[iterator])
             iterator += 1
 
             list_faces: List[Face3D] = []
             for _ in range(num_faces):
-                face_vertexs: list[Vertex] = []
-                for _ in range(3):  # 3 lines per Face object
+                vertices: List[Vertex] = []
+                for _ in range(3):
                     parts = self._data[iterator].split()
                     if parts[0] != "v":
-                        raise ValueError(f"expected line with 'v # # #', got: {parts}")
-                    face_vertexs.append(Vertex(
-                        float(parts[1]), float(parts[2]), float(parts[3])))
+                        raise ValueError(
+                            f"Expected line starting with 'v', got: {parts}")
+                    vertices.append(Vertex(
+                        float(parts[1]), float(parts[2]), float(parts[3])
+                    ))
                     iterator += 1
-                if len(face_vertexs) != 3:
-                    raise ValueError(f"Expected 3 vertex, got: {face_vertexs}")
-                list_faces.append(Face3D(face_vertexs))
-            # make mesh with color and add it
-            new_mesh = Mesh3D(list_faces)
-            new_mesh.set_color(mesh_shader)
-            list_mesh.append(new_mesh)
 
-        return list_mesh
+                if len(vertices) != 3:
+                    raise ValueError(f"Expected 3 vertices, got: {len(vertices)}")
+                list_faces.append(Face3D(vertices))
+
+            mesh = Mesh3D(list_faces)
+            mesh.set_color(shader)
+            list_meshes.append(mesh)
+
+        return list_meshes
 
     def read_file(self, filepath: str) -> List[Mesh3D]:
-        """read file data and make Mesh3D list
+        """
+        Reads a file and creates a list of Mesh3D objects.
 
         Args:
-            filepath (str): fiel path
+            filepath (str): Path to the input file.
 
         Returns:
-            List[Mesh3D]: meshes from file
+            List[Mesh3D]: List of parsed meshes.
         """
         self.read_data(filepath)
         return self.make_list()
 
-    def get_data(self) -> str:
-        """returns data
+    def get_data(self) -> List[str]:
+        """
+        Gets the raw loaded data lines.
 
         Returns:
-            str: data getter
+            List[str]: Loaded file contents.
         """
         return self._data

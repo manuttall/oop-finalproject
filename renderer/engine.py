@@ -73,13 +73,21 @@ class Engine:
 
     @staticmethod
     def main() -> None:
-        """Main entry point to launch the interface and render the scene."""
-        interface = Interface()
-        settings = interface.run()
+        """Main entry point to launch the interface and render the scene.
 
-        engine = Engine()
-        engine.load_scene(settings)
-        engine.render_scene()
+        Reopens the interface when the render window is closed.
+        """
+        while True:
+            interface = Interface()
+            settings = interface.run()
+
+            if not settings or "filepath" not in settings:
+                print("Interface was closed or input was incomplete. Exiting.")
+                break
+
+            engine = Engine()
+            engine.load_scene(settings)
+            engine.render_scene()
 
 
 if __name__ == "__main__":

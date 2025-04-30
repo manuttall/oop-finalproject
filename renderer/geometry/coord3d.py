@@ -3,7 +3,7 @@ Coordinate3D base class for objects with 3D coordinates.
 """
 
 from __future__ import annotations
-from abc import ABC
+from abc import ABC, abstractmethod
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/30"
@@ -81,6 +81,7 @@ class Coordinate3D(ABC):
         """
         self._z = value
 
+    @abstractmethod
     def __repr__(self) -> str:
         """Formal string representation of the 3D coordinate.
 

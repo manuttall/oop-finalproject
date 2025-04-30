@@ -253,6 +253,6 @@ class Vector(Coordinate3D):
         """Informal string representation.
 
         Returns:
-            str: '<x, y, z?'
+            str: '<x, y, z>'
         """
-        return f"<{self._x}, {self._y}, {self._z}?"
+        return f"<{self._x}, {self._y}, {self._z}>"

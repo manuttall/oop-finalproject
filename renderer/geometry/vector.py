@@ -101,7 +101,7 @@ class Vector(Coordinate3D):
         Raises:
             ValueError: if the vector is zero and cannot be normalized
         """
-        mag = self.magnitude()
+        mag = self.magnitude
         if mag == 0:
             raise ValueError("Cannot normalize a zero vector.")
         return Vector(self._x / mag, self._y / mag, self._z / mag)

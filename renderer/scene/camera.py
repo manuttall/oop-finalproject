@@ -33,14 +33,14 @@ class Camera(Vertex):
         """Recalculates the camera's forward, right, and up vectors
         based on current look_at."""
         temp_vec = Vector(self._look_at.x, self._look_at.y, self._look_at.z)
-        forward: Vector = (temp_vec - self).normalize()
+        forward: Vector = (temp_vec - self).normalize
         world_up = Vector(0.0, 0.0, 1.0)
 
         if abs(forward.dot(world_up)) >= 0.999:
             world_up = Vector(0.0, 1.0, 0.0)
 
-        right: Vector = forward.cross(world_up).normalize()
-        up: Vector = right.cross(forward).normalize()
+        right: Vector = forward.cross(world_up).normalize
+        up: Vector = right.cross(forward).normalize
 
         self._forward = forward
         self._right = right

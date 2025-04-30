@@ -98,7 +98,7 @@ class FileImport:
                 if len(vertices) != 3:
                     raise ValueError(f"Expected 3 vertices, got: {len(vertices)}")
 
-                Mesh3D.add(Face3D(vertices), Shader(0, 0, 0))
+                mesh.add(Face3D(vertices), Shader(0, 0, 0))
 
             mesh.set_color(shader)
             list_meshes.append(mesh)

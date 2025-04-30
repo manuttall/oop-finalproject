@@ -5,8 +5,13 @@ Vertex class to represent a vertex in 3D space.
 from __future__ import annotations
 
 import math
+from typing import TYPE_CHECKING
+
 from geometry.coord3d import Coordinate3D
-from geometry.vector import Vector
+
+if TYPE_CHECKING:
+    from geometry.vector import Vector
+
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/07"
@@ -18,7 +23,7 @@ __maintainer__ = "Michael Nuttall"
 class Vertex(Coordinate3D):
     """A vertex of the form (x, y, z) in 3D space."""
 
-    def __sub__(self, other: Vertex) -> Vector:
+    def __sub__(self, other: Vertex) -> "Vector":
         """Subtract another Vertex to get the displacement Vector.
 
         Args:
@@ -27,6 +32,7 @@ class Vertex(Coordinate3D):
         Returns:
             Vector: displacement vector from other to self
         """
+        from geometry.vector import Vector
         if not isinstance(other, Vertex):
             raise TypeError("Subtraction only supported between Vertex objects.")
         return Vector(self._x - other.x, self._y - other.y, self._z - other.z)

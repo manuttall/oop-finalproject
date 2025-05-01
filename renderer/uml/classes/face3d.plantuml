@@ -1,0 +1,22 @@
+@startuml Face3D
+scale 2
+title "UML Class Diagram"
+
+class Face3D {
+    .. Instance Variables ..
+    - _points: List[Vertex]
+    - _color: Shader
+    .. Properties ..
+    + points: List[Vertex] {get; set;}
+    + color: Shader {get; set;}
+    .. Constructor ..
+    + __init__(points: List[Vertex], color: Shader = Shader(0, 0, 0)): None
+    .. Instance Methods ..
+    + __eq__(other: object): bool
+    + centroid(): Vertex
+    + closest_point(new_point: Vertex): Vertex
+    + distance(new_point: Vertex): float
+    + distance_closest(new_point: Vertex): float
+    + __repr__(): str
+}
+@enduml

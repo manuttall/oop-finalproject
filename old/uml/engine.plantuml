@@ -1,0 +1,17 @@
+@startuml Engine
+scale 2
+title "UML Class Diagram"
+
+class Engine {
+    .. Instance Variables ..
+    - _meshes: List[Mesh]
+    .. Properties ..
+    + meshes: List[Mesh] {get;}
+    .. Constructor ..
+    + __init__(): None
+    .. Instance Methods ..
+    + add_mesh(mesh: Mesh): None
+    + remove_mesh(mesh: Mesh): None
+    + draw(): None
+}
+@enduml

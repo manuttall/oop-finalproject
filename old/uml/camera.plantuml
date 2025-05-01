@@ -1,0 +1,20 @@
+@startuml Camera
+scale 2
+title "UML Class Diagram"
+
+class Camera {
+    .. Instance Variables ..
+    - _focal_length: float
+    - _width: float
+    - _height: float
+    .. Properties ..
+    + focal_length: float {get;}
+    + width: float {get;}
+    + height: float {get;}
+    .. Constructor ..
+    + __init__(focal_length: float, width: float, height: float): None
+    .. Instance Methods ..
+    + make(): None
+    + convert_to_camera(mesh: Mesh): Mesh
+}
+@enduml

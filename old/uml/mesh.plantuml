@@ -1,0 +1,18 @@
+@startuml Mesh
+scale 2
+title "UML Class Diagram"
+
+class Mesh {
+    .. Instance Variables ..
+    - _vertices: List[Point]
+    - _faces: List[List[Point]]
+    .. Properties ..
+    + vertices: List[Point] {get;}
+    + faces: List[List[Point]] {get;}
+    .. Constructor ..
+    + __init__(): None
+    .. Instance Methods ..
+    + add_vertex(point: Point): None
+    + add_face(face: List[Point]): None
+}
+@enduml

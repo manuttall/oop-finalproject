@@ -1,0 +1,30 @@
+@startuml ScenarioView
+title "UML Scenario View"
+
+participant "Client" as Client
+participant "3D Engine" as Engine
+participant "Object Model" as Object
+participant "Renderer" as Renderer
+
+
+Client -> Object: Provide points (0,0,0), (1,0,0), (0,1,0), (0,0,1)
+Client -> Object: Provide Camera positon (3,3,3)
+Client -> Object: Provide Camera target (0,0,0)
+Object -> Engine: Define vertices (V1(0,0,0), V2(1,0,0), V3(0,1,0), V4(0,0,1))
+Engine -> Engine: Compute triangular faces from vertices
+Object -> Engine: Define camrea(Positon(3,3,3), Target(0,0,0))
+Engine -> Object: Define Face1(V1, V2, V3)
+Engine -> Object: Define Face2(V1, V2, V4)
+Engine -> Object: Define Face3(V1, V3, V4)
+Engine -> Object: Define Face4(V2, V3, V4)
+Engine -> Object: Order Faces form distance to Camera
+Engine -> Renderer: Send Face1(V1, V2, V3) for rendering
+Renderer -> Renderer: Render Face1 from Camera to Bitmap
+Engine -> Renderer: Send Face2(V1, V2, V4) for rendering
+Renderer -> Renderer: Render Face2 from Camera to Bitmap
+Engine -> Renderer: Send Face3(V1, V3, V4) for rendering
+Renderer -> Renderer: Render Face3 from Camera to Bitmap
+Engine -> Renderer: Send Face4(V2, V3, V4) for rendering
+Renderer -> Renderer: Render Face4 from Camera to Bitmap
+Renderer -> Client: Display Bitmap
+@enduml

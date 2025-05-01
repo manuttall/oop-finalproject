@@ -1,0 +1,18 @@
+@startuml Scene
+scale 2
+title "UML Class Diagram"
+
+class Scene {
+    .. Instance Variables ..
+    - _active_cam: Camera
+    - _meshes: List[Mesh3D]
+    .. Properties ..
+    + meshes: List[Mesh3D] {get; set;}
+    + active_cam: Camera {get; set;}
+    .. Constructor ..
+    + __init__(active_cam: Camera, meshes: List[Mesh3D]): None
+    .. Instance Methods ..
+    + add(new_mesh: Mesh3D): None
+    + make_render(): List[Face2D]
+}
+@enduml

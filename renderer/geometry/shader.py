@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-
 __author__ = "Arin Hartung"
 __date__ = "2025/04/16"
 __license__ = "MIT"

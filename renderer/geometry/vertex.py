@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 from geometry.coord3d import Coordinate3D
 
 if TYPE_CHECKING:
-    from geometry.vector import Vector
+    from geometry.vector import Vector  # pragma: no cover
 
 
 __author__ = "Michael Nuttall"

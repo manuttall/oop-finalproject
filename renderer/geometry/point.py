@@ -1,4 +1,6 @@
-"""Point class to represent a point in the Cartesian plane"""
+"""
+Point class to represent a point in the Cartesian plane.
+"""
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/07"
@@ -8,64 +10,71 @@ __maintainer__ = "Michael Nuttall"
 
 
 class Point:
-    """A point of the form (x,y) in the Cartesian plane.
-    """
+    """A point of the form (x, y) in the Cartesian plane."""
 
-    def __init__(self, x: int, y: int) -> None:
+    def __init__(self, x: float, y: float) -> None:
         """Constructor
 
         Args:
-            x (int): coordinate along the x-axis
-            y (int): coordinate along the y-axis
+            x (float): coordinate along the x-axis
+            y (float): coordinate along the y-axis
         """
-        self._x: int = x
-        self._y: int = y
+        self._x: float = x
+        self._y: float = y
 
     @property
-    def x(self) -> int:
-        """Property to get x
+    def x(self) -> float:
+        """Property to get x.
 
         Returns:
-            int: x
+            float: x
         """
         return self._x
 
     @x.setter
-    def x(self, value: int) -> None:
-        """Property to set x
+    def x(self, value: float) -> None:
+        """Property to set x.
 
         Args:
-            value (int): x
+            value (float): x
         """
         self._x = value
 
     @property
-    def y(self) -> int:
-        """Property to get y
+    def y(self) -> float:
+        """Property to get y.
 
         Returns:
-            int: y
+            float: y
         """
         return self._y
 
     @y.setter
-    def y(self, value: int) -> None:
-        """Property to set y
+    def y(self, value: float) -> None:
+        """Property to set y.
 
         Args:
-            value (int): y
+            value (float): y
         """
         self._y = value
 
     def __eq__(self, other: object) -> bool:
-        """Equality checker
+        """Equality checker.
 
         Args:
-            other (Point): other Point to compare with.
+            other (object): another object to compare.
 
         Returns:
-            bool: True if this point's coordinates are equal to the other's
+            bool: True if coordinates match.
         """
         if not isinstance(other, Point):
             raise NotImplementedError
         return self._x == other.x and self._y == other.y
+
+    def __repr__(self) -> str:
+        """Returns a formal string representation of the Point.
+
+        Returns:
+            str: formatted as 'Point(x, y)'
+        """
+        return f"Point({self._x}, {self._y})"

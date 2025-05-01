@@ -82,4 +82,4 @@ class Engine:
 
 
 if __name__ == "__main__":
-    Engine.main()
+    Engine.main()  # pragma: no cover

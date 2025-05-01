@@ -27,10 +27,31 @@ class Shader:
         if len(args) == 1 and isinstance(args[0], str):
             self._r, self._g, self._b = self.hex_to_rgb(args[0])
         elif len(args) == 3 and all(isinstance(c, int) for c in args):
-            self._r, self._g, self._b = args  # type: ignore[assignment]
+            r = self._validate_component(int(args[0]), "Red")
+            g = self._validate_component(int(args[1]), "Green")
+            b = self._validate_component(int(args[2]), "Blue")
+            self._r, self._g, self._b = r, g, b
         else:
             raise ValueError("Shader must be initialized with either (r, g, b)"
-                             "integers or a hex string '#rrggbb'.")
+                             " integers or a hex string '#rrggbb'.")
+
+    @staticmethod
+    def _validate_component(value: int, name: str) -> int:
+        """Validate that an RGB component is between 0 and 255.
+
+        Args:
+            value (int): Component value.
+            name (str): Name of the component.
+
+        Returns:
+            int: Validated component.
+
+        Raises:
+            ValueError: If out of bounds.
+        """
+        if not (0 <= value <= 255):
+            raise ValueError(f"{name} value {value} out of range [0, 255]")
+        return value
 
     @property
     def r(self) -> int:
@@ -48,7 +69,7 @@ class Shader:
         Args:
             value (int): Red value.
         """
-        self._r = value
+        self._r = self._validate_component(value, "Red")
 
     @property
     def g(self) -> int:
@@ -66,7 +87,7 @@ class Shader:
         Args:
             value (int): Green value.
         """
-        self._g = value
+        self._g = self._validate_component(value, "Green")
 
     @property
     def b(self) -> int:
@@ -84,7 +105,7 @@ class Shader:
         Args:
             value (int): Blue value.
         """
-        self._b = value
+        self._b = self._validate_component(value, "Blue")
 
     @staticmethod
     def hex_to_rgb(hex_color: str) -> Tuple[int, int, int]:
@@ -115,6 +136,9 @@ class Shader:
         Returns:
             str: Hex string like '#ff00ff'.
         """
+        r = Shader._validate_component(r, "Red")
+        g = Shader._validate_component(g, "Green")
+        b = Shader._validate_component(b, "Blue")
         return f"#{r:02x}{g:02x}{b:02x}"
 
     @property
@@ -133,7 +157,11 @@ class Shader:
         Args:
             values (tuple[int, int, int]): (r, g, b)
         """
-        self._r, self._g, self._b = values
+        r, g, b = values
+        r = self._validate_component(values[0], "Red")
+        g = self._validate_component(values[1], "Green")
+        b = self._validate_component(values[2], "Blue")
+        self._r, self._g, self._b = r, g, b
 
     @property
     def hex(self) -> str:
@@ -151,7 +179,7 @@ class Shader:
         Args:
             value (str): Hex string '#rrggbb'.
         """
-        self._r, self._g, self._b = self.hex_to_rgb(value)
+        self.rgb = self.hex_to_rgb(value)
 
     def __repr__(self) -> str:
         """Formal string representation.

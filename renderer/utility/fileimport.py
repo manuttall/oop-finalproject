@@ -86,6 +86,9 @@ class FileImport:
             for _ in range(num_faces):
                 vertices: List[Vertex] = []
                 for _ in range(3):
+                    if iterator >= len(self._data):
+                        raise ValueError("Unexpected end of file "
+                                         "while reading vertex data.")
                     parts = self._data[iterator].split()
                     if parts[0] != "v":
                         raise ValueError(

@@ -1,6 +1,9 @@
 """Shader class to represent RGB colors."""
 
 from __future__ import annotations
+"""Shader class to represent RGB colors."""
+
+from __future__ import annotations
 
 __author__ = "Arin Hartung"
 __date__ = "2025/04/16"
@@ -10,9 +13,13 @@ __maintainer__ = "Arin Hartung"
 
 import re
 from typing import Tuple
+from typing import Tuple
 
 
 class Shader:
+    """Shader class for storing and converting RGB color values."""
+
+    def __init__(self, *args: int | str) -> None:
     """Shader class for storing and converting RGB color values."""
 
     def __init__(self, *args: int | str) -> None:
@@ -23,20 +30,28 @@ class Shader:
 
         Raises:
             ValueError: If arguments are not a valid color format.
+            *args (int | str): Either 3 integers (r, g, b) or 1 hex string '#rrggbb'.
+
+        Raises:
+            ValueError: If arguments are not a valid color format.
         """
         if len(args) == 1 and isinstance(args[0], str):
             self._r, self._g, self._b = self.hex_to_rgb(args[0])
         elif len(args) == 3 and all(isinstance(c, int) for c in args):
             self._r, self._g, self._b = args  # type: ignore[assignment]
+            self._r, self._g, self._b = args  # type: ignore[assignment]
         else:
+            raise ValueError("Shader must be initialized with either (r, g, b)"
+                             "integers or a hex string '#rrggbb'.")
             raise ValueError("Shader must be initialized with either (r, g, b)"
                              "integers or a hex string '#rrggbb'.")
 
     @property
     def r(self) -> int:
-        """Property to get r.
+        """Property to get r..
 
         Returns:
+            int: Red value.
             int: Red value.
         """
         return self._r
@@ -44,17 +59,20 @@ class Shader:
     @r.setter
     def r(self, value: int) -> None:
         """Property to set r.
+        """Property to set r.
 
         Args:
+            value (int): Red value.
             value (int): Red value.
         """
         self._r = value
 
     @property
     def g(self) -> int:
-        """Property to get g.
+        """Property to get g..
 
         Returns:
+            int: Green value.
             int: Green value.
         """
         return self._g
@@ -62,8 +80,10 @@ class Shader:
     @g.setter
     def g(self, value: int) -> None:
         """Property to set g.
+        """Property to set g.
 
         Args:
+            value (int): Green value.
             value (int): Green value.
         """
         self._g = value
@@ -71,17 +91,20 @@ class Shader:
     @property
     def b(self) -> int:
         """Property to get b.
+        """Property to get b.
 
         Returns:
+            int: Blue value.
             int: Blue value.
         """
         return self._b
 
     @b.setter
     def b(self, value: int) -> None:
-        """Property to set b.
+        """Property to set b..
 
         Args:
+            value (int): Blue value.
             value (int): Blue value.
         """
         self._b = value
@@ -89,13 +112,19 @@ class Shader:
     @staticmethod
     def hex_to_rgb(hex_color: str) -> Tuple[int, int, int]:
         """Converts a hex color string to an (r, g, b) tuple.
+    def hex_to_rgb(hex_color: str) -> Tuple[int, int, int]:
+        """Converts a hex color string to an (r, g, b) tuple.
 
         Args:
             hex_color (str): Hex string like '#ff00ff'.
 
+            hex_color (str): Hex string like '#ff00ff'.
+
         Returns:
             tuple[int, int, int]: Red, Green, Blue components.
+            tuple[int, int, int]: Red, Green, Blue components.
         """
+        if not re.fullmatch(r"#([0-9a-fA-F]{6})", hex_color):
         if not re.fullmatch(r"#([0-9a-fA-F]{6})", hex_color):
             raise ValueError(f"Invalid hex color format: {hex_color}")
         r = int(hex_color[1:3], 16)
@@ -104,6 +133,8 @@ class Shader:
         return r, g, b
 
     @staticmethod
+    def rgb_to_hex(r: int, g: int, b: int) -> str:
+        """Converts RGB values to a hex color string.
     def rgb_to_hex(r: int, g: int, b: int) -> str:
         """Converts RGB values to a hex color string.
 
@@ -160,3 +191,16 @@ class Shader:
             str: Shader(r=..., g=..., b=...)
         """
         return f"Shader(r={self._r}, g={self._g}, b={self._b})"
+
+    def __eq__(self, other: object) -> bool:
+        """Checks equality with another Shader based on RGB values.
+
+        Args:
+            other (object): The object to compare with.
+
+        Returns:
+            bool: True if RGB values match, False otherwise.
+        """
+        if not isinstance(other, Shader):
+            return NotImplemented
+        return self.rgb == other.rgb

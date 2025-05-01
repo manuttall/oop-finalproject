@@ -2,6 +2,7 @@
 import unittest
 import math
 from typing import cast, Any
+from unittest.mock import patch
 from hypothesis import given, strategies as st
 from geometry import Vector, Vertex
 
@@ -163,6 +164,26 @@ class TestVector(unittest.TestCase):
         # The magnitude property should recompute on next access
         new_magnitude = self.v1.magnitude
         self.assertNotEqual(original_magnitude, new_magnitude)
+
+    def test_y_property_set_calls_invalidate_cache(self) -> None:
+        """Test that setting y updates _y and calls _invalidate_cache."""
+        with patch.object(self.v1, "_invalidate_cache") as mock_invalidate:
+            self.v1.y = 10.0
+            mock_invalidate.assert_called_once()
+            self.assertEqual(self.v1.y, 10.0)
+
+    def test_z_property_set_calls_invalidate_cache(self) -> None:
+        """Test that setting y updates _y and calls _invalidate_cache."""
+        with patch.object(self.v1, "_invalidate_cache") as mock_invalidate:
+            self.v1.z = 10.0
+            mock_invalidate.assert_called_once()
+            self.assertEqual(self.v1.z, 10.0)
+
+    def test_rsub_invalid_type_raises_type_error(self) -> None:
+        """Test that __rsub__ raises TypeError when left-hand operand is invalid."""
+        invalid_operand = object()
+        with self.assertRaises(TypeError):
+            _ = invalid_operand - self.v1  # triggers v1.__rsub__(invalid_operand)
 
     @given(
         st.floats(-1e6, 1e6, allow_nan=False, allow_infinity=False),

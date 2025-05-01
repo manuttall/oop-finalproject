@@ -19,7 +19,7 @@ class DummyCoordinate3D(Coordinate3D):
     """
 
     def __repr__(self) -> str:
-        return f"DummyCoordinate3D({self._x}, {self._y}, {self._z})"
+        return super().__repr__()
 
 
 class TestCoordinate3D(unittest.TestCase):
@@ -63,7 +63,7 @@ class TestCoordinate3D(unittest.TestCase):
 
     def test_repr(self) -> None:
         """Test __repr__ returns expected string."""
-        expected = "DummyCoordinate3D(1.0, 2.0, 3.0)"
+        expected = "Coord(1.0, 2.0, 3.0)"
         self.assertEqual(repr(self.coord), expected)
 
     def test_x_property_invalid_type(self) -> None:

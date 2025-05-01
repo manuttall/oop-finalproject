@@ -2,6 +2,7 @@
 import unittest
 import math
 from typing import cast, Any
+from unittest.mock import patch
 from hypothesis import given, strategies as st
 from geometry import Vector, Vertex
 
@@ -47,7 +48,7 @@ class TestVector(unittest.TestCase):
     def test_dot_product(self) -> None:
         """Test that the dot product between two vectors is correct."""
         dot = self.v1.dot(self.v2)
-        expected = 1*4 + 2*5 + 3*6
+        expected = 1 * 4 + 2 * 5 + 3 * 6
         self.assertEqual(dot, expected)
 
     def test_dot_invalid_type(self) -> None:
@@ -71,14 +72,14 @@ class TestVector(unittest.TestCase):
     def test_add_vector(self) -> None:
         """Test that adding two vectors returns the correct vector."""
         result = self.v1 + self.v2
-        expected = Vector(1+4, 2+5, 3+6)
+        expected = Vector(1 + 4, 2 + 5, 3 + 6)
         self.assertEqual(result, expected)
 
     def test_add_vertex(self) -> None:
         """Test that adding a vector and a vertex returns the correct vertex."""
         vertex = Vertex(7.0, 8.0, 9.0)
         result = self.v1 + vertex
-        expected = Vertex(1+7, 2+8, 3+9)
+        expected = Vertex(1 + 7, 2 + 8, 3 + 9)
         self.assertEqual(result, expected)
 
     def test_add_invalid_type(self) -> None:
@@ -98,14 +99,14 @@ class TestVector(unittest.TestCase):
         """Test that subtracting a vertex returns the correct vector."""
         vertex = Vertex(1.0, 2.0, 3.0)
         result = self.v2 - vertex
-        expected = Vector(4-1, 5-2, 6-3)
+        expected = Vector(4 - 1, 5 - 2, 6 - 3)
         self.assertEqual(result, expected)
 
     def test_rsub_vertex(self) -> None:
         """Test that right-hand subtraction with a vertex works correctly."""
         vertex = Vertex(4.0, 5.0, 6.0)
         result = self.v1.__rsub__(vertex)
-        expected = Vector(4-1, 5-2, 6-3)
+        expected = Vector(4 - 1, 5 - 2, 6 - 3)
         self.assertEqual(result, expected)
 
     def test_sub_invalid_type(self) -> None:
@@ -163,6 +164,26 @@ class TestVector(unittest.TestCase):
         # The magnitude property should recompute on next access
         new_magnitude = self.v1.magnitude
         self.assertNotEqual(original_magnitude, new_magnitude)
+
+    def test_y_property_set_calls_invalidate_cache(self) -> None:
+        """Test that setting y updates _y and calls _invalidate_cache."""
+        with patch.object(self.v1, "_invalidate_cache") as mock_invalidate:
+            self.v1.y = 10.0
+            mock_invalidate.assert_called_once()
+            self.assertEqual(self.v1.y, 10.0)
+
+    def test_z_property_set_calls_invalidate_cache(self) -> None:
+        """Test that setting y updates _y and calls _invalidate_cache."""
+        with patch.object(self.v1, "_invalidate_cache") as mock_invalidate:
+            self.v1.z = 10.0
+            mock_invalidate.assert_called_once()
+            self.assertEqual(self.v1.z, 10.0)
+
+    def test_rsub_invalid_type_raises_type_error(self) -> None:
+        """Test that __rsub__ raises TypeError when left-hand operand is invalid."""
+        invalid_operand = object()
+        with self.assertRaises(TypeError):
+            _ = invalid_operand - self.v1  # triggers v1.__rsub__(invalid_operand)
 
     @given(
         st.floats(-1e6, 1e6, allow_nan=False, allow_infinity=False),

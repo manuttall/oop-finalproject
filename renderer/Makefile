@@ -7,6 +7,10 @@ PLANTUML = java -jar ~/plantuml.jar
 all: fix-style style-check type-check unittest create-cov-report clean
 	@echo "All done..."
 
+.PHONY: run
+run:
+	@$(PYTHON) engine.py
+
 .PHONY: unittest
 unittest:
 	$(PYTHON) -m pytest -v

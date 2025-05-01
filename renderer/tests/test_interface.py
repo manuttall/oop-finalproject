@@ -18,8 +18,21 @@ class TestInterface(unittest.TestCase):
     """unit test class to test the Inerface class """
 
     def setUp(self) -> None:
-        """Create an Interface instance for testing."""
+        """Patch Tkinter's Tk to prevent GUI from launching."""
+        self.tk_patcher = patch("tkinter.Tk")
+        mock_tk = self.tk_patcher.start()
+
+        # Create a mock Tk instance with a `tk` attribute to avoid AttributeError
+        mock_root = MagicMock()
+        mock_root.tk = MagicMock()
+        mock_tk.return_value = mock_root
+
+        # Create the interface after patching
         self.interface = Interface()
+
+    def tearDown(self) -> None:
+        """Stop Tk patcher."""
+        self.tk_patcher.stop()
 
     @patch("tkinter.Tk")  # Mock Tkinter Tk object to avoid creating a real window
     def test_initialization(self, mock_tk: MagicMock) -> None:
@@ -53,7 +66,6 @@ class TestInterface(unittest.TestCase):
         self.interface._entry_bgcolor = mock_entry
 
         self.interface._collect_input()
-        
 
         expected_result = {
             "filepath": "assets/demo.obj",

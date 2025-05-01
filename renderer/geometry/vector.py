@@ -5,7 +5,10 @@ Vector class for vector operations in 3D space.
 from __future__ import annotations
 
 import math
+from functools import cached_property
+from geometry.coord3d import Coordinate3D
 from geometry.vertex import Vertex
+
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/16"
@@ -14,20 +17,72 @@ __version__ = "0.1.0"
 __maintainer__ = "Michael Nuttall"
 
 
-class Vector(Vertex):
+class Vector(Coordinate3D):
     """A vector in 3D space represented by its components (x, y, z)."""
 
-    def __init__(self, x: float, y: float, z: float) -> None:
-        """Constructor
+    def _invalidate_cache(self) -> None:
+        """Invalidates cached properties if vector values are changed."""
+        self.__dict__.pop("magnitude", None)
+        self.__dict__.pop("normalize", None)
+
+    @property
+    def x(self) -> float:
+        """Property to get x.
+
+        Returns:
+            float: x
+        """
+        return self._x
+
+    @x.setter
+    def x(self, value: float) -> None:
+        """Property to set x.
 
         Args:
-            x (float): x-component of the vector
-            y (float): y-component of the vector
-            z (float): z-component of the vector
+            value (float): x
         """
-        # pylint: disable=useless-parent-delegation
-        super().__init__(x, y, z)
+        self._invalidate_cache()
+        self._x = value
 
+    @property
+    def y(self) -> float:
+        """Property to get y.
+
+        Returns:
+            float: y
+        """
+        return self._y
+
+    @y.setter
+    def y(self, value: float) -> None:
+        """Property to set y.
+
+        Args:
+            value (float): y
+        """
+        self._invalidate_cache()
+        self._y = value
+
+    @property
+    def z(self) -> float:
+        """Property to get z.
+
+        Returns:
+            float: z
+        """
+        return self._z
+
+    @z.setter
+    def z(self, value: float) -> None:
+        """Property to set z.
+
+        Args:
+            value (float): z coordinate
+        """
+        self._invalidate_cache()
+        self._z = value
+
+    @cached_property
     def magnitude(self) -> float:
         """Calculates the magnitude (length) of the vector.
 
@@ -36,6 +91,7 @@ class Vector(Vertex):
         """
         return math.sqrt(self._x ** 2 + self._y ** 2 + self._z ** 2)
 
+    @cached_property
     def normalize(self) -> Vector:
         """Returns the normalized (unit) vector.
 
@@ -45,7 +101,7 @@ class Vector(Vertex):
         Raises:
             ValueError: if the vector is zero and cannot be normalized
         """
-        mag = self.magnitude()
+        mag = self.magnitude
         if mag == 0:
             raise ValueError("Cannot normalize a zero vector.")
         return Vector(self._x / mag, self._y / mag, self._z / mag)
@@ -192,3 +248,11 @@ class Vector(Vertex):
             str: 'Vector(x, y, z)'
         """
         return f"Vector({self._x:.6f}, {self._y:.6f}, {self._z:.6f})"
+
+    def __str__(self) -> str:
+        """Informal string representation.
+
+        Returns:
+            str: '<x, y, z>'
+        """
+        return f"<{self._x}, {self._y}, {self._z}>"

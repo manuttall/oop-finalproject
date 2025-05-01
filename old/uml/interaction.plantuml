@@ -1,0 +1,10 @@
+@startuml ClassInteraction
+title "UML Class Interaction"
+
+Screen "1" *-- "1" Engine : manages
+Engine "1" *-- "*" Mesh : composed of
+Engine "1" *-- "1" Camera : composed of
+Camera "1" *-- "*" Point : composed of
+Mesh "1" *-- "*" Point : composed of
+
+@enduml

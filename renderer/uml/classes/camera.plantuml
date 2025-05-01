@@ -1,0 +1,28 @@
+@startuml Camera
+scale 2
+title "UML Class Diagram"
+
+class Camera {
+    .. Inherits ..
+    Vertex
+    .. Instance Variables ..
+    - _look_at: Vertex
+    - _forward: Vector
+    - _up: Vector
+    - _right: Vector
+    .. Constructor ..
+    + __init__(origin: Vertex, look_at: Vertex): None
+    .. Properties ..
+    + forward: Vector {get;}
+    + up: Vector {get;}
+    + right: Vector {get;}
+    .. Public Methods ..
+    + set_look_at(new_look_at: Vertex): None
+    + is_vertex_in_front(vertex: Vertex): bool
+    + is_face_in_front(face: Face3D): bool
+    + project_vertex(vertex: Vertex): Point
+    + project_face(face: Face3D): Face2D
+    .. Private Methods ..
+    - _recalculate_axes(): None
+}
+@enduml

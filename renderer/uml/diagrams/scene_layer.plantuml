@@ -1,0 +1,45 @@
+@startuml Scene_File_Layer
+scale 1.5
+title "Layer 2: Scene Setup and File Loading"
+
+class Engine {
+  + load_scene(settings)
+}
+
+package "File I/O" {
+  class FileImport {
+    + read_file(filepath: str): List[Mesh3D]
+  }
+}
+
+package "Scene & Rendering" {
+  class Scene {
+    + make_render(): List[Face2D]
+  }
+
+  class Screen {
+    + render(faces: List[Face2D])
+    + show()
+  }
+
+  class Camera {
+    + project_face(face: Face3D): Face2D
+  }
+
+  class AspectRatio {
+    + horizontal: float {get; set;}
+    + vertical: float {get; set;}
+    + ratio(): float
+  }
+}
+
+Engine --> FileImport : read_file()
+Engine --> Scene : constructs
+Engine --> Screen : constructs
+Scene --> Camera
+Scene --> Mesh3D
+Camera --> Face3D
+Camera --> Vertex
+Camera --> Vector
+AspectRatio --> Screen
+@enduml

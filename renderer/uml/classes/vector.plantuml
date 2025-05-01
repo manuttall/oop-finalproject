@@ -1,0 +1,24 @@
+@startuml Vector
+scale 2
+title "UML Class Diagram"
+
+class Vector {
+    .. Inherits ..
+    Coordinate3D
+    .. Cached Properties ..
+    + magnitude: float {get;}
+    + normalize: Vector {get;}
+    .. Methods ..
+    + dot(other: Vector): float
+    + cross(other: Vector): Vector
+    + __add__(other: Vertex): Vertex | Vector
+    + __radd__(other: Vertex): Vertex | Vector
+    + __sub__(other: Vertex): Vector
+    + __rsub__(other: Vertex): Vector
+    + __mul__(scalar: float): Vector
+    + __rmul__(scalar: float): Vector
+    + __eq__(other: object): bool
+    + __repr__(): str
+    + __str__(): str
+}
+@enduml

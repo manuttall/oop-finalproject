@@ -1,0 +1,19 @@
+@startuml AspectRatio
+scale 2
+title "UML Class Diagram"
+
+class AspectRatio {
+    .. Instance Variables ..
+    - _horizontal: float
+    - _vertical: float
+    .. Properties ..
+    + horizontal: float {get; set;}
+    + vertical: float {get; set;}
+    .. Constructor ..
+    + __init__(horizontal: float, vertical: float): None
+    .. Instance Methods ..
+    + ratio(): float
+    + __str__(): str
+    + __repr__(): str
+}
+@enduml

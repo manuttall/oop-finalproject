@@ -1,0 +1,19 @@
+@startuml Engine
+scale 2
+title "UML Class Diagram"
+
+class Engine {
+    .. Class Variables ..
+    - _instance: Engine | None
+    .. Instance Variables ..
+    - _scene: Scene | None
+    - _screen: Screen | None
+    .. Constructor ..
+    + __new__(cls): Engine
+    + __init__(): None
+    .. Public Methods ..
+    + load_scene(settings: dict[str, Any]): None
+    + render_scene(): None
+    + main(): None
+}
+@enduml

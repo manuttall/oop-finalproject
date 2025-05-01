@@ -1,0 +1,19 @@
+@startuml Coordinate3D
+scale 2
+title "UML Class Diagram"
+
+abstract class Coordinate3D {
+    .. Instance Variables ..
+    - _x: float
+    - _y: float
+    - _z: float
+    .. Properties ..
+    + x: float {get; set;}
+    + y: float {get; set;}
+    + z: float {get; set;}
+    .. Constructor ..
+    + __init__(x: float, y: float, z: float): None
+    .. Abstract Methods ..
+    + __repr__(): str
+}
+@enduml

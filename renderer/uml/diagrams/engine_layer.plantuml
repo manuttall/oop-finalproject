@@ -1,0 +1,18 @@
+@startuml UI_And_Engine_Layer
+scale 1.5
+title "Layer 1: User Interface and Engine Control"
+
+package "UI & Control" {
+  class Interface {
+    + run(): dict[str, Any]
+  }
+
+  class Engine {
+    + main(): None
+    + load_scene(settings: dict[str, Any]): None
+    + render_scene(): None
+  }
+
+  Interface --> Engine : user input
+}
+@enduml

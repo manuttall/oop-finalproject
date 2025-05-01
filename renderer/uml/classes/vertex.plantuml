@@ -1,0 +1,15 @@
+@startuml Vertex
+scale 2
+title "UML Class Diagram"
+
+class Vertex {
+    .. Inherits ..
+    Coordinate3D
+    .. Instance Methods ..
+    + __sub__(other: Vertex): Vector
+    + __eq__(other: object): bool
+    + distance(other: Vertex): float
+    + __repr__(): str
+    + __str__(): str
+}
+@enduml

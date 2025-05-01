@@ -1,0 +1,19 @@
+@startuml FileImport
+scale 2
+title "UML Class Diagram"
+
+class FileImport {
+    .. Class Variables ..
+    - _instance: FileImport | None
+    .. Instance Variables ..
+    - _data: List[str]
+    .. Constructor ..
+    + __new__(cls): FileImport
+    + __init__(): None
+    .. Public Methods ..
+    + read_data(filepath: str): None
+    + make_list(): List[Mesh3D]
+    + read_file(filepath: str): List[Mesh3D]
+    + get_data(): List[str]
+}
+@enduml

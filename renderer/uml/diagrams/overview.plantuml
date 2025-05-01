@@ -1,0 +1,113 @@
+@startuml EngineSystemOverview
+scale 1.5
+title "Composite UML Diagram: 3D Rendering Engine System"
+
+package "UI & Control" {
+  class Interface {
+    + run(): dict[str, Any]
+  }
+
+  class Engine {
+    + main(): None
+    + load_scene(settings: dict[str, Any]): None
+    + render_scene(): None
+  }
+
+  Interface --> Engine : user input
+}
+
+package "File I/O" {
+  class FileImport {
+    + read_file(filepath: str): List[Mesh3D]
+  }
+
+  Engine --> FileImport : read_file()
+}
+
+package "Scene & Rendering" {
+  class Scene {
+    + make_render(): List[Face2D]
+  }
+
+  class Screen {
+    + render(faces: List[Face2D]): None
+    + show(): None
+  }
+
+  class Camera {
+    + project_face(face: Face3D): Face2D
+    + is_face_in_front(face: Face3D): bool
+  }
+
+  class AspectRatio {
+    + horizontal: float {get; set;}
+    + vertical: float {get; set;}
+    + ratio(): float
+  }
+
+  Engine --> Scene : creates
+  Engine --> Screen : creates
+  Scene --> Camera : uses
+  Scene --> Mesh3D : manages
+  Scene --> Face2D : makes
+  Camera --> Face3D : projects
+  Camera --> Vertex : uses
+  Camera --> Vector : uses
+  Screen --> Face2D : draws
+  AspectRatio --> Screen : configures
+}
+
+package "Geometry" {
+  class Mesh3D {
+    + faces: List[Face3D] {get; set;}
+    + set_color_variance(value: Shader, variance: int): None
+    + add(new_face: Face3D): None
+  }
+
+  class Face3D {
+    + points: List[Vertex] {get; set;}
+    + color: Shader {get; set;}
+    + distance(new_point: Vertex): float
+    + centroid(): Vertex
+  }
+
+  class Face2D {
+    + points: List[Point] {get; set;}
+    + color: Shader {get; set;}
+    + distance: float {get;}
+  }
+
+  class Vertex {
+    + x: float {get; set;}
+    + y: float {get; set;}
+    + z: float {get; set;}
+  }
+
+  class Vector {
+    + magnitude: float
+    + normalize: Vector
+    + dot(other: Vector): float
+    + cross(other: Vector): Vector
+  }
+
+  class Point {
+    + x: float {get; set;}
+    + y: float {get; set;}
+  }
+
+  class Shader {
+    + r: int {get; set;}
+    + g: int {get; set;}
+    + b: int {get; set;}
+    + rgb: Tuple[int, int, int] {get; set;}
+    + hex: str {get; set;}
+  }
+
+  FileImport --> Mesh3D : builds
+  Mesh3D --> Face3D : contains
+  Face3D --> Vertex : has
+  Face3D --> Shader : uses
+  Face2D --> Point : uses
+  Face2D --> Shader : uses
+}
+@enduml

@@ -1,0 +1,30 @@
+@startuml Interface
+scale 2
+title "UML Class Diagram"
+
+class Interface {
+    .. Instance Variables ..
+    - _root: tk.Tk
+    - _result: dict[str, Any]
+    - _entry_filepath: tk.Entry
+    - _entry_cam_origin: tk.Entry
+    - _entry_look_at: tk.Entry
+    - _entry_aspect: tk.Entry
+    - _entry_resolution: tk.Entry
+    - _entry_bgcolor: tk.Entry
+    - _entry_variance: tk.Entry
+    - _render_button: tk.Button
+    .. Constructor ..
+    + __init__(): None
+    .. Public Methods ..
+    + run(): dict[str, Any]
+    .. Private Methods ..
+    - _setup_widgets(): None
+    - _on_enter(event: tk.Event[Any]): None
+    - _on_leave(event: tk.Event[Any]): None
+    - _add_placeholder(entry: tk.Entry, text: str): None
+    - _center_window(width: int, height: int): None
+    - _show_error(message: str): None
+    - _collect_input(): None
+}
+@enduml

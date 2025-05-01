@@ -18,6 +18,7 @@ from geometry import Point, Face2D, Shader
 
 class TestScreen(unittest.TestCase):
     """a unit test class for Screen"""
+
     def setUp(self) -> None:
         """
         Setup method.
@@ -127,7 +128,7 @@ class TestScreen(unittest.TestCase):
         face2 = Face2D([Point(1, 1), Point(2, 1), Point(1, 2)], 0.5, Shader(0, 255, 0))
         faces = [face1, face2]
         self.screen._draw_faces(faces)
-        
+
         calls = [(face2,), (face1,)]
         self.assertEqual(
             [call.args for call in mock_draw_face.call_args_list],

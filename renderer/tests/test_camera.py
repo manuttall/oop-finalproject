@@ -17,6 +17,7 @@ from hypothesis import given, strategies as st
 class TestCamera(unittest.TestCase):
     """A unit test class to test Camera
     """
+
     def setUp(self) -> None:
         """
         Setup method to create a default Camera instance.

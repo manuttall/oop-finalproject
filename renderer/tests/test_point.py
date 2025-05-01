@@ -80,7 +80,7 @@ class TestPoint(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             _ = self.p1 == object()
 
-    @given(st.floats(allow_nan=False, allow_infinity=False), 
+    @given(st.floats(allow_nan=False, allow_infinity=False),
            st.floats(allow_nan=False, allow_infinity=False))
     def test_hypothesis_constructor(self, x: float, y: float) -> None:
         """

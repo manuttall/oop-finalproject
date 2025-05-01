@@ -30,10 +30,10 @@ class TestEngine(unittest.TestCase):
     def test_load_scene_initializes_scene_and_screen(self) -> None:
         """Test loading scene correctly sets up scene and screen."""
         with patch("engine.FileImport") as mock_file_import, \
-             patch("engine.Camera") as mock_camera, \
-             patch("engine.Scene") as mock_scene, \
-             patch("engine.Screen") as mock_screen, \
-             patch("engine.Shader") as mock_shader:
+                patch("engine.Camera") as mock_camera, \
+                patch("engine.Scene") as mock_scene, \
+                patch("engine.Screen") as mock_screen, \
+                patch("engine.Shader") as mock_shader:
 
             mock_file_import.return_value.read_file.return_value = [MagicMock()]
             settings = {

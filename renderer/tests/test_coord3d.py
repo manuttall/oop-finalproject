@@ -17,6 +17,7 @@ class DummyCoordinate3D(Coordinate3D):
     Args:
         Coordinate3D (_type_): parent class
     """
+
     def __repr__(self) -> str:
         return f"DummyCoordinate3D({self._x}, {self._y}, {self._z})"
 

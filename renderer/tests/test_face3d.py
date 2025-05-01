@@ -25,8 +25,9 @@ class TestFace3D(unittest.TestCase):
         self.face = Face3D([self.v1, self.v2, self.v3], Shader(10, 20, 30))
 
     def test_constructor_valid(self) -> None:
-        """Test that a valid Face3D is constructed with 3 vertices."""
+        """Test that a valid Face3D is constructed with 3 vertices and color."""
         self.assertEqual(self.face.points, [self.v1, self.v2, self.v3])
+        self.assertEqual(self.face.color, Shader(10, 20, 30))
 
     def test_constructor_invalid(self) -> None:
         """Test that constructor raises ValueError with < 3 vertices."""

@@ -181,6 +181,8 @@ class Interface:
                                  "must each have three numbers.")
             if len(aspect) != 2:
                 raise ValueError("Aspect ratio must have exactly two numbers.")
+            if aspect[1] <= 0 or aspect[0] <= 0:
+                raise ValueError("Aspect ratio must be positive.")
             if resolution <= 0:
                 raise ValueError("Resolution must be positive.")
             if variance < 0:

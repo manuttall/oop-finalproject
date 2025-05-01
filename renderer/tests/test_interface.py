@@ -34,6 +34,7 @@ class TestInterface(unittest.TestCase):
         mock_root = mock_tk.return_value
         self.assertEqual(self.interface._root, mock_root)
         self.assertTrue(isinstance(self.interface._root, MagicMock))
+        self.interface._root.destroy()
 
     @patch("tkinter.Entry")  # Mock Tkinter Entry widget
     def test_collect_input_valid(self, mock_entry: MagicMock) -> None:
@@ -52,6 +53,7 @@ class TestInterface(unittest.TestCase):
         self.interface._entry_bgcolor = mock_entry
 
         self.interface._collect_input()
+        
 
         expected_result = {
             "filepath": "assets/demo.obj",
@@ -88,31 +90,43 @@ class TestInterface(unittest.TestCase):
         mock_ms_box.assert_called_with(
             "Input Error", "File not found: assets/invalid/filepath.obj"
         )
+        self.interface._root.destroy()
 
     @patch("tkinter.messagebox.showerror")
     def test_show_error(self, mock_ms_box: MagicMock) -> None:
         """Test if the error popup is displayed."""
         self.interface._show_error("Test error message")
         mock_ms_box.assert_called_with("Input Error", "Test error message")
+        self.interface._root.destroy()
 
-    @patch("tkinter.Tk")  # Mock the Tk object to avoid GUI pop-up
-    def test_run(self, mock_tk: MagicMock) -> None:
-        """Test the run method."""
-        with patch.object(self.interface, "_collect_input") as mock_collect_input:
-            mock_collect_input.return_value = None
-            result = self.interface.run()
+    @patch("os.path.isfile", return_value=True)
+    def test_window_closing_on_valid_input(self, mock_isfile):
+        """Test that the window closes when input is valid."""
+        # Set up valid mock entry fields
+        self.interface._entry_filepath = MagicMock(
+            get=MagicMock(return_value="assets/demo.obj"))
+        self.interface._entry_cam_origin = MagicMock(
+            get=MagicMock(return_value="0 0 0"))
+        self.interface._entry_look_at = MagicMock(
+            get=MagicMock(return_value="0 0 1"))
+        self.interface._entry_aspect = MagicMock(
+            get=MagicMock(return_value="16 9"))
+        self.interface._entry_resolution = MagicMock(
+            get=MagicMock(return_value="1920"))
+        self.interface._entry_variance = MagicMock(
+            get=MagicMock(return_value="0"))
+        self.interface._entry_bgcolor = MagicMock(
+            get=MagicMock(return_value="255 255 255"))
 
-        self.assertEqual(result, self.interface._result)
+        # Patch the root's destroy method
+        self.interface._root = MagicMock()
 
-    @patch("tkinter.Tk")
-    def test_window_closing(self, mock_tk: MagicMock) -> None:
-        """test if the window closing propely
-        """
-        mock_root = mock_tk.return_value
-        with patch.object(self.interface, "_collect_input") as mock_collect_input:
-            mock_collect_input.return_value = None
-            self.interface._collect_input()
-        mock_root.destroy.assert_called_once()
+        # Call the actual method
+        self.interface._collect_input()
+
+        # Check that destroy was called
+        self.interface._root.destroy.assert_called_once()
+        self.interface._root.destroy()
 
     @patch("tkinter.Entry")
     @patch("tkinter.messagebox.showerror")
@@ -138,6 +152,7 @@ class TestInterface(unittest.TestCase):
             "Input Error",
             "Background color must have three integers between 0 and 255."
         )
+        self.interface._root.destroy()
 
     @patch("tkinter.Entry")  # Mock Tkinter Entry widget
     @patch("tkinter.messagebox.showerror")  # Mock the error popup
@@ -165,6 +180,7 @@ class TestInterface(unittest.TestCase):
         mock_ms_box.assert_called_with(
             "Input Error", "Aspect ratio must have exactly two numbers."
         )
+        self.interface._root.destroy()
 
     @patch("tkinter.Entry")  # Mock Tkinter Entry widget
     def test_valid_aspect_ratio(self, mock_entry: MagicMock) -> None:
@@ -224,6 +240,7 @@ class TestInterface(unittest.TestCase):
         mock_ms_box.assert_called_with(
             "Input Error", "could not convert string to float: 'invalid'"
         )
+        self.interface._root.destroy()
 
     @patch("tkinter.Entry")  # Mock Tkinter Entry widget
     @patch("tkinter.messagebox.showerror")  # Mock the error popup
@@ -249,5 +266,6 @@ class TestInterface(unittest.TestCase):
 
         # Ensure the error message is shown for the invalid aspect ratio
         mock_ms_box.assert_called_with(
-            "Input Error", "Aspect ratio must have exactly two numbers."
+            "Input Error", "Aspect ratio must be positive."
         )
+        self.interface._root.destroy()

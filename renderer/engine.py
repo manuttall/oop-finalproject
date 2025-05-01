@@ -56,10 +56,11 @@ class Engine:
                         Vertex(*settings["look_at"]))
 
         self._scene = Scene(camera, meshes)
+        bg_r, bg_g, bg_b = settings.get("background_color", (30, 30, 30))
         self._screen = Screen(
             AspectRatio(*settings["aspect_ratio"]),
             settings["resolution"],
-            Shader(30, 30, 30)  # Background color
+            Shader(bg_r, bg_g, bg_b)
         )
 
     def render_scene(self) -> None:

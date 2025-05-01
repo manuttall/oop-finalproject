@@ -26,7 +26,7 @@ class Interface:
         self._root.configure(bg="#f0f0f0")
         self._result: dict[str, Any] = {}
         self._setup_widgets()
-        self._center_window(400, 520)
+        self._center_window(400, 580)
 
     def _on_enter(self, event: tk.Event[Any]) -> None:
         """Handles mouse hover event on the Render button.
@@ -81,6 +81,12 @@ class Interface:
         self._entry_resolution = tk.Entry(self._root, width=20)
         self._add_placeholder(self._entry_resolution, "300")
         self._entry_resolution.pack(**padding)
+
+        tk.Label(self._root, text="Background color (R G B):",
+                 bg="#f0f0f0").pack(padx=10, pady=5)
+        self._entry_bgcolor = tk.Entry(self._root, width=20)
+        self._add_placeholder(self._entry_bgcolor, "30 30 30")
+        self._entry_bgcolor.pack(padx=10, pady=5)
 
         tk.Label(self._root, text="Color variance:",
                  bg="#f0f0f0").pack(**padding)
@@ -165,7 +171,11 @@ class Interface:
             aspect = tuple(map(float, self._entry_aspect.get().split()))
             resolution = int(self._entry_resolution.get())
             variance = int(self._entry_variance.get())
+            bg_color = tuple(map(int, self._entry_bgcolor.get().split()))
 
+            if len(bg_color) != 3 or any(not (0 <= c <= 255) for c in bg_color):
+                raise ValueError("Background color must have "
+                                 "three integers between 0 and 255.")
             if len(cam_origin) != 3 or len(look_at) != 3:
                 raise ValueError("Camera origin and look-at "
                                  "must each have three numbers.")
@@ -177,6 +187,7 @@ class Interface:
                 raise ValueError("Variance must be non-negative.")
 
         except ValueError as e:
+            self._result = {}
             self._show_error(str(e))
             return
 
@@ -186,7 +197,8 @@ class Interface:
             "look_at": look_at,
             "aspect_ratio": aspect,
             "resolution": resolution,
-            "variance": variance
+            "variance": variance,
+            "background_color": bg_color
         }
         self._root.destroy()
 

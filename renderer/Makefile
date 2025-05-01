@@ -37,7 +37,7 @@ create-docs: create-docs-folder
 
 .PHONY: create-cov-report
 create-cov-report:
-	@pytest --verbose --color=yes --cov=geometry --cov=scene --cov=utility --cov=engine --cov-report term --cov-report=html:$(DOCS)/pycov tests/
+	@pytest --verbose --color=yes --cov --cov-report term --cov-report=html:$(DOCS)/pycov tests/
 	@echo "Coverage report created in $(DOCS)/pycov folder"
 
 .PHONY: create-uml

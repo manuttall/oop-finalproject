@@ -31,18 +31,18 @@ class TestVector(unittest.TestCase):
 
     def test_magnitude(self) -> None:
         """Test that the magnitude (length) is computed correctly."""
-        self.assertAlmostEqual(self.v1.magnitude(), math.sqrt(1**2 + 2**2 + 3**2))
+        self.assertAlmostEqual(self.v1.magnitude, math.sqrt(1**2 + 2**2 + 3**2))
 
     def test_normalize(self) -> None:
         """Test that normalize returns a unit vector."""
-        norm = self.v1.normalize()
-        self.assertAlmostEqual(norm.magnitude(), 1.0)
+        norm = self.v1.normalize
+        self.assertAlmostEqual(norm.magnitude, 1.0)
         self.assertIsInstance(norm, Vector)
 
     def test_normalize_zero_vector_raises(self) -> None:
         """Test that normalizing a zero vector raises a ValueError."""
         with self.assertRaises(ValueError):
-            self.zero.normalize()
+            _ = self.zero.normalize
 
     def test_dot_product(self) -> None:
         """Test that the dot product between two vectors is correct."""
@@ -94,16 +94,18 @@ class TestVector(unittest.TestCase):
         result = self.v2.__radd__(self.v1)
         self.assertEqual(result, self.v1 + self.v2)
 
-    def test_sub_vector(self) -> None:
-        """Test that subtracting two vectors returns the correct vector."""
-        result = self.v2 - self.v1
+    def test_sub_vertex(self) -> None:
+        """Test that subtracting a vertex returns the correct vector."""
+        vertex = Vertex(1.0, 2.0, 3.0)
+        result = self.v2 - vertex
         expected = Vector(4-1, 5-2, 6-3)
         self.assertEqual(result, expected)
 
-    def test_rsub_vector(self) -> None:
-        """Test that right-hand subtraction works correctly."""
-        result = self.v2.__rsub__(self.v1)
-        expected = Vector(1-4, 2-5, 3-6)
+    def test_rsub_vertex(self) -> None:
+        """Test that right-hand subtraction with a vertex works correctly."""
+        vertex = Vertex(4.0, 5.0, 6.0)
+        result = self.v1.__rsub__(vertex)
+        expected = Vector(4-1, 5-2, 6-3)
         self.assertEqual(result, expected)
 
     def test_sub_invalid_type(self) -> None:
@@ -147,6 +149,20 @@ class TestVector(unittest.TestCase):
         r = repr(self.v1)
         self.assertTrue(r.startswith("Vector("))
         self.assertIn("1.000000", r)
+
+    def test_str_format(self) -> None:
+        """Test that the informal string representation (__str__) is formatted."""
+        s = str(self.v1)
+        self.assertTrue(s.startswith("<"))
+        self.assertIn("1.0", s)
+
+    def test_cache_invalidation(self) -> None:
+        """Test that changing components invalidates cached properties."""
+        original_magnitude = self.v1.magnitude
+        self.v1.x = 10.0
+        # The magnitude property should recompute on next access
+        new_magnitude = self.v1.magnitude
+        self.assertNotEqual(original_magnitude, new_magnitude)
 
     @given(
         st.floats(-1e6, 1e6, allow_nan=False, allow_infinity=False),

@@ -72,6 +72,37 @@ class TestVertex(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.v1.distance(cast("Vertex", invalid_operand))
 
+    def test_eq_reflexive(self) -> None:
+        """Test that a Vertex equals itself (reflexivity)."""
+        self.assertTrue(self.v1 == self.v1)
+
+    def test_eq_symmetric(self) -> None:
+        """Test that equality is symmetric."""
+        v3 = Vertex(1.0, 2.0, 3.0)
+        self.assertTrue(self.v1 == v3 and v3 == self.v1)
+
+    def test_eq_transitive(self) -> None:
+        """Test that equality is transitive."""
+        v3 = Vertex(1.0, 2.0, 3.0)
+        v4 = Vertex(1.0, 2.0, 3.0)
+        self.assertTrue(self.v1 == v3 and v3 == v4 and self.v1 == v4)
+
+    def test_subtract_same_vertex(self) -> None:
+        """Test subtracting a vertex from itself returns zero vector."""
+        result = self.v1 - self.v1
+        self.assertEqual(result.x, 0)
+        self.assertEqual(result.y, 0)
+        self.assertEqual(result.z, 0)
+
+    def test_distance_same_vertex(self) -> None:
+        """Test distance from a vertex to itself is zero."""
+        self.assertEqual(self.v1.distance(self.v1), 0.0)
+
+    def test_repr_format(self) -> None:
+        """Test that __repr__ has the expected format."""
+        repr_str = repr(self.v1)
+        self.assertRegex(repr_str, r'Vertex\(.*\)')
+
     @given(
         st.floats(allow_nan=False, allow_infinity=False),
         st.floats(allow_nan=False, allow_infinity=False),

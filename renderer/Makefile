@@ -56,8 +56,16 @@ ifeq ($(wildcard ~/plantuml.jar), )
 	curl -L -o ~/plantuml.jar https://sourceforge.net/projects/plantuml/files/plantuml.jar/download
 	sudo apt install graphviz
 endif
-	$(PLANTUML) ./uml/example.plantuml
-	@echo "UML diagrams created and saved in uml folder"
+	@mkdir -p uml/img
+
+	@OUT_DIR=$$(realpath uml/img); \
+	echo "Rendering UML to $$OUT_DIR..."; \
+	find uml -name "*.plantuml" | while read file; do \
+		echo "Rendering $$file..."; \
+		$(PLANTUML) -o "$$OUT_DIR" "$$file"; \
+	done
+
+	@echo "✅ UML diagrams saved in uml/img/"
 
 .PHONY: clean
 clean:

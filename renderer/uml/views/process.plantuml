@@ -1,0 +1,23 @@
+@startuml ProcessView
+title "UML Process View – 3D Rendering Engine"
+
+start
+
+:Launch Tkinter Interface;
+:Gather user input (file, camera, resolution, etc);
+
+if (Valid Input?) then (Yes)
+    :Import Mesh Data from File;
+    :Set Camera and Screen;
+    :Apply Shader + Color Variance;
+    :Filter Faces in Front of Camera;
+    :Project 3D Faces to 2D Points;
+    :Sort Faces by Distance (Painter's Algorithm);
+    :Draw Faces on Tkinter Canvas;
+    :Display Rendered Scene;
+    stop
+else (No)
+    :Show Validation Error in Popup;
+    stop
+endif
+@enduml

@@ -1,0 +1,12 @@
+@startuml ProcessView_Rendering
+title "Process View – Rendering Pipeline"
+
+start
+:Begin scene rendering;
+:Filter faces visible to camera;
+:Project visible Face3D to Face2D;
+:Sort faces by distance (Painter's Algorithm);
+:Render each Face2D onto Screen;
+:Show Tkinter window;
+stop
+@enduml

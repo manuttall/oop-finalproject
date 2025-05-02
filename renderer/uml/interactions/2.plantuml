@@ -1,0 +1,18 @@
+@startuml EngineInteraction
+title "Class Interaction – Rendering Pipeline"
+
+Interface "1" --> "1" Engine : gathers input for
+Engine "1" *-- "1" Scene : manages
+Engine "1" *-- "1" Screen : renders to
+Engine "1" *-- "1" FileImport : loads with
+
+Scene "1" *-- "1" Camera : uses
+Scene "1" *-- "*" Mesh3D : contains
+Camera "1" *-- "*" Vector : orientation
+Camera "1" *-- "*" Vertex : position + look_at
+
+Screen "1" *-- "*" Face2D : draws
+Face2D "1" *-- "3" Point : defined by
+Face2D "1" *-- "1" Shader : filled with
+
+@enduml

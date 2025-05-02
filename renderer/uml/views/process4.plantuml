@@ -1,0 +1,36 @@
+@startuml MasterProcessView
+title "Master Process View – 3D Rendering Engine"
+
+start
+
+:Launch Tkinter Interface (Interface.run);
+:Gather file path, camera, shader, resolution, etc;
+
+if (Fields Valid?) then (Yes)
+    :Pass settings to Engine;
+    :Call FileImport.read_file(filepath);
+
+    :Parse file into Mesh3D objects;
+    :Apply Shader + Color Variance to Meshes;
+
+    :Create Camera with origin + look_at;
+    :Create AspectRatio from resolution;
+    :Build Scene (Camera + Meshes);
+    :Build Screen (AspectRatio, resolution, background);
+
+    :Call Scene.make_render();
+    :Filter visible Face3D using Camera;
+    :Project each Face3D to Face2D;
+    :Sort Face2D list by distance (Painter's Algorithm);
+
+    :Call Screen.render(faces);
+    :Draw Face2D triangles on Tkinter Canvas;
+    :Show Rendered Scene;
+
+    stop
+else (No)
+    :Show popup error message;
+    stop
+endif
+
+@enduml

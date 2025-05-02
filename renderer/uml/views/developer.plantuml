@@ -1,0 +1,42 @@
+@startuml DeveloperView
+title Developer View of 3D Rendering Engine
+
+package "3D Renderer App" {
+    component "Engine" as Engine
+    component "Interface (Tkinter)" as Interface
+    component "Screen Renderer" as Screen
+    component "Scene Manager" as Scene
+    component "Camera" as Camera
+    component "Mesh + Faces" as Geometry
+    component "Shader & Colors" as Shader
+    component "File Importer" as FileImport
+
+    Engine --> Interface : "Gets user config"
+    Engine --> FileImport : "Loads geometry"
+    Engine --> Scene : "Initializes Scene"
+    Engine --> Screen : "Creates output canvas"
+
+    Scene --> Camera : "Uses for projection"
+    Scene --> Geometry : "Stores Mesh3D"
+    Geometry --> Shader : "Color info"
+
+    Screen --> Shader : "Background + fill"
+    Screen --> Geometry : "Draws Face2D"
+    Camera --> Geometry : "Projects Face3D"
+}
+
+Interface ..> [Tkinter Library]
+Screen ..> [Tkinter Canvas]
+
+package "Testing" {
+    component "unittest + hypothesis" as UnitTest
+    UnitTest ..> Engine : "Tests control logic"
+    UnitTest ..> Scene : "Mocks geometry"
+    UnitTest ..> Screen : "Mocks canvas rendering"
+    UnitTest ..> Camera : "Tests projection"
+    UnitTest ..> Geometry : "Validates vector math"
+    UnitTest ..> FileImport : "Tests file parsing"
+    UnitTest ..> Interface : "Mocks user input"
+}
+
+@enduml

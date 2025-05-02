@@ -1,0 +1,62 @@
+@startuml FullClassInteraction
+title "UML Class Interaction – Full 3D Engine"
+
+' === Core Engine and Control ===
+class Engine
+class Interface
+class FileImport
+
+' === Scene and Rendering ===
+class Scene
+class Screen
+class Camera
+class AspectRatio
+
+' === Geometry & Rendering Objects ===
+class Mesh3D
+class Face3D
+class Face2D
+class Vertex
+class Vector
+class Point
+class Shader
+
+' === Relationships ===
+
+' Engine relationships
+Engine *-- Interface : "gets input from"
+Engine *-- FileImport : "loads data with"
+Engine *-- Scene : "creates"
+Engine *-- Screen : "creates"
+
+' FileImport relationships
+FileImport --> Mesh3D : "builds"
+Mesh3D *-- Face3D : "contains"
+Face3D *-- Vertex : "has"
+Face3D *-- Shader : "uses"
+
+' Scene relationships
+Scene *-- Camera : "uses"
+Scene *-- Mesh3D : "contains"
+Scene --> Face2D : "returns in make_render()"
+
+' Camera relationships
+Camera *-- Vertex : "origin\nlook_at"
+Camera *-- Vector : "forward\nup\nright"
+Camera --> Face3D : "projects"
+
+' Screen relationships
+Screen *-- Face2D : "renders"
+Screen *-- AspectRatio : "uses"
+Screen --> Point : "draws"
+
+' Face2D relationships
+Face2D *-- Point : "contains"
+Face2D *-- Shader : "uses"
+
+' Vector & Vertex inherit Coordinate3D
+class Coordinate3D
+Vertex --|> Coordinate3D
+Vector --|> Coordinate3D
+
+@enduml

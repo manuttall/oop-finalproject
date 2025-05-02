@@ -1,0 +1,33 @@
+@startuml ScenarioView
+title "UML Scenario View – Loading and Rendering a Scene"
+
+participant "User" as User
+participant "Interface (Tkinter GUI)" as Interface
+participant "Engine" as Engine
+participant "FileImport" as FileImport
+participant "Scene" as Scene
+participant "Camera" as Camera
+participant "Screen (Tkinter Canvas)" as Screen
+
+User -> Interface: Launch GUI
+User -> Interface: Enter file path, camera, aspect, resolution
+Interface -> Engine: Pass validated settings
+
+Engine -> FileImport: read_file(filepath)
+FileImport -> FileImport: Parse file into Mesh3D with Face3D + Vertex + Shader
+FileImport --> Engine: Return loaded meshes
+
+Engine -> Scene: Create Scene with Camera + Mesh3D
+Engine -> Screen: Create Screen with AspectRatio and Shader
+
+Engine -> Scene: make_render()
+Scene -> Camera: is_face_in_front(Face3D)
+Camera -> Camera: Project Face3D → Face2D
+Scene -> Scene: Sort faces by distance (Painter's Algorithm)
+Scene --> Engine: Return List[Face2D]
+
+Engine -> Screen: render(faces)
+Screen -> Screen: Draw each Face2D triangle
+Screen -> User: Display Rendered Scene
+
+@enduml

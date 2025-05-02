@@ -1,0 +1,16 @@
+@startuml ProcessView_Input
+title "Process View – Input Collection"
+
+start
+:Launch Interface (Tkinter GUI);
+:Prompt user for file path, camera, resolution, colors;
+
+if (Fields Valid?) then (Yes)
+    :Pack settings into dictionary;
+    :Return settings to Engine;
+    stop
+else (No)
+    :Show popup error message;
+    stop
+endif
+@enduml

@@ -11,6 +11,7 @@ __maintainer__ = "Michael Nuttall"
 import unittest
 from hypothesis import given, strategies as st
 from geometry import Shader
+from typing import Tuple
 
 
 class TestShader(unittest.TestCase):
@@ -101,7 +102,7 @@ class TestShader(unittest.TestCase):
         st.integers(0, 255),
         st.integers(0, 255)
     ))
-    def test_hex_round_trip(self, rgb: tuple[int, int, int]) -> None:
+    def test_hex_round_trip(self, rgb: Tuple[int, int, int]) -> None:
         """Hypothesis: RGB -> Shader -> Hex is round-trippable to lowercase hex."""
         r, g, b = rgb
         expected_hex = Shader.rgb_to_hex(r, g, b)
@@ -157,7 +158,7 @@ class TestShader(unittest.TestCase):
         st.integers(-100, 400)
     ))
     def test_shader_constructor_with_fuzzed_rgb(self,
-                                                rgb: tuple[int, int, int]) -> None:
+                                                rgb: Tuple[int, int, int]) -> None:
         """Hypothesis: Shader can handle or reject
         out-of-bound RGB during construction."""
         try:

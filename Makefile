@@ -16,6 +16,10 @@ check-type:
 	$(TYPE_CHECK) $(DEMO-ASSIGNMENT)/A1/cold
 	$(TYPE_CHECK) $(DEMO-ASSIGNMENT)/A1-OOP/cold
 	$(TYPE_CHECK) $(DEMO-ASSIGNMENT)/A2-ABC/egypt
+	$(TYPE_CHECK) renderer/engine.py
+	$(TYPE_CHECK) renderer/scene
+	$(TYPE_CHECK) renderer/utility
+	$(TYPE_CHECK) renderer/geometry
 
 .PHONY: check-style
 check-style:
@@ -24,6 +28,10 @@ check-style:
 	$(STYLE_CHECK) $(DEMO-ASSIGNMENT)/A1/cold
 	$(STYLE_CHECK) $(DEMO-ASSIGNMENT)/A1-OOP/cold
 	$(STYLE_CHECK) $(DEMO-ASSIGNMENT)/A2-ABC/egypt
+	$(STYLE_CHECK) renderer/engine.py
+	$(STYLE_CHECK) renderer/scene
+	$(STYLE_CHECK) renderer/utility
+	$(STYLE_CHECK) renderer/geometry
 
 # discover and run all tests
 .PHONY: run-test
@@ -33,6 +41,7 @@ run-test:
 	$(TEST) $(TEST_ARGS) $(DEMO-ASSIGNMENT)/A1/cold/tests
 	$(TEST) $(TEST_ARGS) $(DEMO-ASSIGNMENT)/A1-OOP/cold/tests
 	$(TEST) $(TEST_ARGS) $(DEMO-ASSIGNMENT)/A2-ABC/egypt/tests
+	$(TEST) $(TEST_ARGS) renderer/tests
 
 .PHONY: run-test-coverage
 run-test-coverage:
@@ -41,6 +50,7 @@ run-test-coverage:
 	$(COVERAGE) -v --cov-report=html:$(DEMO-ASSIGNMENT)/A1/cold/htmlcov --cov-report=term --cov=$(DEMO-ASSIGNMENT)/A1/cold $(DEMO-ASSIGNMENT)/A1/cold/tests
 	$(COVERAGE) -v --cov-report=html:$(DEMO-ASSIGNMENT)/A1-OOP/cold/htmlcov --cov-report=term --cov=$(DEMO-ASSIGNMENT)/A1-OOP/cold $(DEMO-ASSIGNMENT)/A1-OOP/cold/tests
 	$(COVERAGE) -v --cov-report=html:$(DEMO-ASSIGNMENT)/A2-ABC/egypt/htmlcov --cov-report=term --cov=$(DEMO-ASSIGNMENT)/A2-ABC/egypt $(DEMO-ASSIGNMENT)/A2-ABC/egypt/tests
+	$(COVERAGE) -v --cov-report=html:renderer/htmlcov --cov-report=term --cov=/renderer renderer/tests
 
 .PHONY: clean
 clean:

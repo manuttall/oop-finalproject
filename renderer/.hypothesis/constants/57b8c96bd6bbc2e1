@@ -1,4 +1,0 @@
-# file: /home/user/oop-finalproject/renderer/utility/interface.py
-# hypothesis_version: 6.131.9
-
-[255, 400, 580, '#1C86EE', '#1E90FF', '#f0f0f0', '-0.7 -1 1', '0 0 0.65', '0.2.0', '10', '2025/04/27', '30 30 30', '300', '4 3', '<Enter>', '<FocusIn>', '<FocusOut>', '<Leave>', 'Color variance:', 'Enter file path:', 'Helvetica', 'Input Error', 'MIT', 'Michael Nuttall', 'Render', 'Resolution (pixels):', 'aspect_ratio', 'assets', 'assets/', 'assets/demo.obj', 'background_color', 'black', 'bold', 'camera_origin', 'demo.obj', 'filepath', 'gray', 'look_at', 'padx', 'pady', 'raised', 'resolution', 'variance']

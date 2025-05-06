@@ -141,3 +141,41 @@ class TestInterface(unittest.TestCase):
         """Test custom error display."""
         self.interface._show_error("Bad input")
         mock_msg.assert_called_with("Input Error", "Bad input")
+
+    @patch("tkinter.messagebox.showerror")
+    def test_invalid_resolution_zero(self, mock_msg: MagicMock) -> None:
+        """Test that resolution must be positive."""
+        mock_entry = MagicMock()
+        mock_entry.get.side_effect = [
+            "assets/demo.obj", "0 0 0", "0 0 1",
+            "16 9", "0", "10", "30 30 30"  # Zero resolution
+        ]
+        self.interface._entry_filepath = mock_entry
+        self.interface._entry_cam_origin = mock_entry
+        self.interface._entry_look_at = mock_entry
+        self.interface._entry_aspect = mock_entry
+        self.interface._entry_resolution = mock_entry
+        self.interface._entry_variance = mock_entry
+        self.interface._entry_bgcolor = mock_entry
+
+        self.interface._collect_input()
+        mock_msg.assert_called_with("Input Error", "Resolution must be positive.")
+
+    @patch("tkinter.messagebox.showerror")
+    def test_invalid_variance_negative(self, mock_msg: MagicMock) -> None:
+        """Test that variance must be non-negative."""
+        mock_entry = MagicMock()
+        mock_entry.get.side_effect = [
+            "assets/demo.obj", "0 0 0", "0 0 1",
+            "16 9", "300", "-5", "30 30 30"  # Negative variance
+        ]
+        self.interface._entry_filepath = mock_entry
+        self.interface._entry_cam_origin = mock_entry
+        self.interface._entry_look_at = mock_entry
+        self.interface._entry_aspect = mock_entry
+        self.interface._entry_resolution = mock_entry
+        self.interface._entry_variance = mock_entry
+        self.interface._entry_bgcolor = mock_entry
+
+        self.interface._collect_input()
+        mock_msg.assert_called_with("Input Error", "Variance must be non-negative.")

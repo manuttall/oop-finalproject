@@ -42,7 +42,7 @@ class TestInterface(unittest.TestCase):
         self.assertTrue(isinstance(self.interface._root, MagicMock))
 
     @patch("os.path.isfile", return_value=True)
-    def test_collect_input_valid(self, mock_isfile: MagicMock) -> None:
+    def test_collect_input_valid(self, _mock_isfile: MagicMock) -> None:
         """Test valid input collection."""
         mock_entry = MagicMock()
         mock_entry.get.side_effect = [
@@ -117,7 +117,9 @@ class TestInterface(unittest.TestCase):
         mock_msg.assert_called()
 
     @patch("tkinter.messagebox.showerror")
-    def test_invalid_background_color(self, mock_msg: MagicMock) -> None:
+    @patch("os.path.isfile", return_value=True)
+    def test_invalid_background_color(self, _mock_file: MagicMock, 
+                                      mock_msg: MagicMock) -> None:
         """Test bad background color values."""
         mock_entry = MagicMock()
         mock_entry.get.side_effect = [
@@ -133,8 +135,9 @@ class TestInterface(unittest.TestCase):
         self.interface._entry_bgcolor = mock_entry
 
         self.interface._collect_input()
-        mock_msg.assert_called_with("Input Error", "Background color must have "
-                                    "three integers between 0 and 255.")
+        mock_msg.assert_called_with("Input Error", 
+                                    "Background color must have three "
+                                    "integers between 0 and 255.")
 
     @patch("tkinter.messagebox.showerror")
     def test_show_error_messagebox(self, mock_msg: MagicMock) -> None:
@@ -143,12 +146,14 @@ class TestInterface(unittest.TestCase):
         mock_msg.assert_called_with("Input Error", "Bad input")
 
     @patch("tkinter.messagebox.showerror")
-    def test_invalid_resolution_zero(self, mock_msg: MagicMock) -> None:
+    @patch("os.path.isfile", return_value=True)
+    def test_invalid_resolution_zero(self, _mock_file: MagicMock,
+                                     mock_msg: MagicMock) -> None:
         """Test that resolution must be positive."""
         mock_entry = MagicMock()
         mock_entry.get.side_effect = [
             "assets/demo.obj", "0 0 0", "0 0 1",
-            "16 9", "0", "10", "30 30 30"  # Zero resolution
+            "16 9", "0", "10", "30 30 30"
         ]
         self.interface._entry_filepath = mock_entry
         self.interface._entry_cam_origin = mock_entry
@@ -161,8 +166,10 @@ class TestInterface(unittest.TestCase):
         self.interface._collect_input()
         mock_msg.assert_called_with("Input Error", "Resolution must be positive.")
 
+    @patch("os.path.isfile", return_value=True)
     @patch("tkinter.messagebox.showerror")
-    def test_invalid_variance_negative(self, mock_msg: MagicMock) -> None:
+    def test_invalid_variance_negative(self, mock_msg: MagicMock,
+                                       _mock_file: MagicMock) -> None:
         """Test that variance must be non-negative."""
         mock_entry = MagicMock()
         mock_entry.get.side_effect = [

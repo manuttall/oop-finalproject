@@ -171,7 +171,7 @@ class Interface:
         """Parses an RGB color input."""
         parts = tuple(map(int, text.split()))
         if len(parts) != 3 or any(not (0 <= c <= 255) for c in parts):
-            raise ValueError("Background color must have"
+            raise ValueError("Background color must have "
                              "three integers between 0 and 255.")
         return parts
 
@@ -182,9 +182,12 @@ class Interface:
             raise ValueError(f"{label} must be positive.")
         return value
 
-    def _parse_non_negative_int(self, text: str, _label: str) -> int:
+    def _parse_non_negative_int(self, text: str, label: str) -> int:
         """Parses a non-negative integer field."""
-        return max(0, int(text)) if text else 10
+        value = int(text)
+        if value < 0:
+            raise ValueError(f"{label} must be non-negative.")
+        return value
 
     def _collect_input(self) -> None:
         """Collects input from user, validates it, and stores in _result."""
@@ -200,6 +203,7 @@ class Interface:
                                                   "Resolution")
             variance = self._parse_non_negative_int(self._entry_variance.get(),
                                                     "Variance")
+
             bg_color = self._parse_color(self._entry_bgcolor.get())
 
             self._result = {

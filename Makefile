@@ -50,7 +50,7 @@ run-test-coverage:
 	$(COVERAGE) -v --cov-report=html:$(DEMO-ASSIGNMENT)/A1/cold/htmlcov --cov-report=term --cov=$(DEMO-ASSIGNMENT)/A1/cold $(DEMO-ASSIGNMENT)/A1/cold/tests
 	$(COVERAGE) -v --cov-report=html:$(DEMO-ASSIGNMENT)/A1-OOP/cold/htmlcov --cov-report=term --cov=$(DEMO-ASSIGNMENT)/A1-OOP/cold $(DEMO-ASSIGNMENT)/A1-OOP/cold/tests
 	$(COVERAGE) -v --cov-report=html:$(DEMO-ASSIGNMENT)/A2-ABC/egypt/htmlcov --cov-report=term --cov=$(DEMO-ASSIGNMENT)/A2-ABC/egypt $(DEMO-ASSIGNMENT)/A2-ABC/egypt/tests
-	$(COVERAGE) -v --cov-report=html:renderer/htmlcov --cov-report=term --cov=/renderer renderer/tests
+	$(COVERAGE) -v --cov-report=html:renderer/htmlcov --cov-report=term --cov=renderer renderer/tests
 
 .PHONY: clean
 clean:

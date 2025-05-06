@@ -118,7 +118,7 @@ class TestInterface(unittest.TestCase):
 
     @patch("tkinter.messagebox.showerror")
     @patch("os.path.isfile", return_value=True)
-    def test_invalid_background_color(self, _mock_file: MagicMock, 
+    def test_invalid_background_color(self, _mock_file: MagicMock,
                                       mock_msg: MagicMock) -> None:
         """Test bad background color values."""
         mock_entry = MagicMock()
@@ -135,7 +135,7 @@ class TestInterface(unittest.TestCase):
         self.interface._entry_bgcolor = mock_entry
 
         self.interface._collect_input()
-        mock_msg.assert_called_with("Input Error", 
+        mock_msg.assert_called_with("Input Error",
                                     "Background color must have three "
                                     "integers between 0 and 255.")
 
@@ -186,3 +186,8 @@ class TestInterface(unittest.TestCase):
 
         self.interface._collect_input()
         mock_msg.assert_called_with("Input Error", "Variance must be non-negative.")
+
+    def test_tear_down_missing_root(self) -> None:
+        """Test tearDown handles missing _root attribute gracefully."""
+        del self.interface._root
+        self.tearDown()

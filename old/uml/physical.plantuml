@@ -1,0 +1,14 @@
+@startuml PhysicalView
+node "User's Computer" {
+    [Python Application] 
+    [Tkinter GUI] 
+    [Local File System] 
+    [CPU] 
+    [Memory]
+    
+    [Python Application] --> [Tkinter GUI] : Renders Objects
+    [Python Application] --> [Local File System] : Reads Object Data
+    [Python Application] --> [CPU] : Executes Code
+    [Python Application] --> [Memory] : Stores Runtime Data
+}
+@enduml

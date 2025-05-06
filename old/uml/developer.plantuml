@@ -1,0 +1,31 @@
+@startuml DeveloperView
+title Developer View of Client App
+
+package "Client App" {
+    component "Main Application" as MainApp
+    component "Image Processing (Pillow)" as Pillow
+    component "Camera" as Camera
+    component "Bitmap" as Bitmap
+    component "GUI (Tkinter)" as GUI
+
+    MainApp --> GUI
+    MainApp ..> Pillow : "Validates Image Operations"
+    
+    Bitmap --> Camera
+    Camera --> GUI : "Captures images"
+  
+    Pillow ..> Camera : "Displays images"
+    Pillow --> Bitmap : "Creates Bitmap"
+
+}
+GUI ..> [Tkinter Library]
+  Pillow ..> [PIL Library]
+package "Testing" {
+    component "Pytest" as Pytest
+    Pytest ..> MainApp : "Tests Core Logic"
+    Pytest ..> GUI : "Mocks GUI Interactions"
+    Pytest ..> Pillow : "Validates Image Operations"
+    Pytest ..> Camera : "Tests Camera Functions"
+}
+
+@enduml

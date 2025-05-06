@@ -1,0 +1,26 @@
+@startuml ClassInteraction
+title "UML Class Interaction – 3D Engine Runtime"
+
+Engine "1" *-- "1" Scene : manages
+Engine "1" *-- "1" Screen : displays on
+Engine "1" ..> Interface : loads config from
+Engine "1" ..> FileImport : reads data from
+
+Scene "1" *-- "1" Camera : uses
+Scene "1" *-- "*" Mesh3D : contains
+
+Camera "1" *-- "1" Vertex : origin
+Camera "1" *-- "1" Vertex : look_at
+Camera "1" *-- "3" Vector : orientation
+
+Mesh3D "1" *-- "*" Face3D : made of
+Face3D "1" *-- "3" Vertex : triangle
+Face3D "1" *-- "1" Shader : color
+
+Screen "1" *-- "*" Face2D : renders
+Face2D "1" *-- "3" Point : triangle
+Face2D "1" *-- "1" Shader : color
+
+Screen "1" *-- "1" AspectRatio : dimensions
+
+@enduml

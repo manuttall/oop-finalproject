@@ -1,0 +1,25 @@
+@startuml Shader
+scale 2
+title "UML Class Diagram"
+
+class Shader {
+    .. Instance Variables ..
+    - _r: int
+    - _g: int
+    - _b: int
+    .. Properties ..
+    + r: int {get; set;}
+    + g: int {get; set;}
+    + b: int {get; set;}
+    + rgb: Tuple[int, int, int] {get; set;}
+    + hex: str {get; set;}
+    .. Constructor ..
+    + __init__(*args: int | str): None
+    .. Static Methods ..
+    + hex_to_rgb(hex_color: str): Tuple[int, int, int]
+    + rgb_to_hex(r: int, g: int, b: int): str
+    .. Instance Methods ..
+    + __repr__(): str
+    + __eq__(other: object): bool
+}
+@enduml

@@ -1,0 +1,55 @@
+@startuml Geometry_Projection_Layer
+scale 1.5
+title "Layer 3: Geometry and Projection"
+
+package "Geometry" {
+  class Mesh3D {
+    + faces: List[Face3D] {get; set;}
+    + add(new_face: Face3D): None
+    + set_color_variance(shader, variance)
+  }
+
+  class Face3D {
+    + points: List[Vertex] {get; set;}
+    + color: Shader {get; set;}
+    + distance(new_point: Vertex): float
+  }
+
+  class Face2D {
+    + points: List[Point] {get; set;}
+    + color: Shader {get; set;}
+    + distance: float {get;}
+  }
+
+  class Vertex {
+    + x: float
+    + y: float
+    + z: float
+  }
+
+  class Vector {
+    + dot(other: Vector): float
+    + cross(other: Vector): Vector
+    + magnitude: float
+  }
+
+  class Point {
+    + x: float
+    + y: float
+  }
+
+  class Shader {
+    + r: int
+    + g: int
+    + b: int
+    + hex: str
+  }
+}
+
+FileImport --> Mesh3D
+Mesh3D --> Face3D
+Face3D --> Vertex
+Face3D --> Shader
+Face2D --> Point
+Face2D --> Shader
+@enduml

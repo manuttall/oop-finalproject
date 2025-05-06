@@ -1,0 +1,14 @@
+@startuml GeometryComposition
+title "Class Interaction – Geometry Structure"
+
+Mesh3D "1" *-- "*" Face3D : composed of
+Face3D "1" *-- "3" Vertex : triangle vertices
+Face3D "1" *-- "1" Shader : color
+
+Vertex "1" --|> Coordinate3D
+Vector "1" --|> Coordinate3D
+
+Face2D "1" *-- "3" Point : projected vertices
+Point "1" --|> (no parent)
+
+@enduml

@@ -1,9 +1,4 @@
-"""AspectRatio class for storing and computing aspect ratios.
-
-This module defines a class that encapsulates the horizontal and vertical
-components of an aspect ratio and provides methods to retrieve, modify,
-and compute the scalar ratio between them.
-"""
+"""AspectRatio class for storing and computing aspect ratios."""
 
 __author__ = "Michael Nuttall"
 __date__ = "2025/04/16"
@@ -23,10 +18,12 @@ class AspectRatio:
             vertical (float): Vertical component of the aspect ratio.
 
         Raises:
-            ValueError: If vertical is zero.
+            ValueError: If either component is not positive.
         """
-        if vertical == 0:
-            raise ValueError("Vertical component cannot be zero.")
+        if horizontal <= 0:
+            raise ValueError("Horizontal component must be positive.")
+        if vertical <= 0:
+            raise ValueError("Vertical component must be positive.")
         self._horizontal: float = horizontal
         self._vertical: float = vertical
 
@@ -45,7 +42,12 @@ class AspectRatio:
 
         Args:
             value (float): New horizontal value.
+
+        Raises:
+            ValueError: If value is not positive.
         """
+        if value <= 0:
+            raise ValueError("Horizontal component must be positive.")
         self._horizontal = value
 
     @property
@@ -65,10 +67,10 @@ class AspectRatio:
             value (float): New vertical value.
 
         Raises:
-            ValueError: If vertical is set to zero.
+            ValueError: If value is not positive.
         """
-        if value == 0:
-            raise ValueError("Vertical component cannot be zero.")
+        if value <= 0:
+            raise ValueError("Vertical component must be positive.")
         self._vertical = value
 
     def ratio(self) -> float:

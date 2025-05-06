@@ -1,0 +1,15 @@
+@startuml ProcessView
+title "UML Process View"
+start
+:Gather and validate Object data;
+if (Valid?) then (Yes)
+    :Convert to mesh;
+    :Sort mesh faces by distance to camera;
+    :Calculate bitmap from faces;
+    :Render Bitmap with Tkinter;
+    stop
+else (No)
+    :Respond with error;
+    stop
+endif
+@enduml

@@ -1,0 +1,49 @@
+@startuml ContextView
+title "UML Context View – 3D Rendering Engine"
+
+actor User
+
+rectangle "3D Renderer Application" {
+
+    rectangle "User Interface" as UI {
+        (Enter Scene Settings)
+        (Select Model File)
+    }
+
+    rectangle "Engine" as Engine {
+        (Load Scene)
+        (Render Scene)
+    }
+
+    rectangle "Scene System" as Scene {
+        (Manage Camera)
+        (Manage Meshes)
+    }
+
+    rectangle "Renderer" as Renderer {
+        (Project Geometry)
+        (Draw on Screen)
+    }
+
+    rectangle "File System" as FS {
+        (Read Geometry File)
+    }
+
+    User --> (Enter Scene Settings)
+    User --> (Select Model File)
+    
+    (Enter Scene Settings) --> (Load Scene)
+    (Select Model File) --> (Load Scene)
+    
+    (Load Scene) --> (Read Geometry File)
+    (Load Scene) --> (Manage Camera)
+    (Load Scene) --> (Manage Meshes)
+    
+    (Render Scene) --> (Project Geometry)
+    (Render Scene) --> (Draw on Screen)
+    
+    (Project Geometry) --> (Manage Camera)
+    (Project Geometry) --> (Manage Meshes)
+}
+
+@enduml

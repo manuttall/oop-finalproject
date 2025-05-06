@@ -1,0 +1,18 @@
+@startuml Point
+scale 2
+title "UML Class Diagram"
+
+class Point {
+    .. Instance Variables ..
+    - _x: float
+    - _y: float
+    .. Properties ..
+    + x: float {get; set;}
+    + y: float {get; set;}
+    .. Constructor ..
+    + __init__(x: float, y: float): None
+    .. Instance Methods ..
+    + __eq__(other: object): bool
+    + __repr__(): str
+}
+@enduml

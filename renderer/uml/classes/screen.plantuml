@@ -1,0 +1,25 @@
+@startuml Screen
+scale 2
+title "UML Class Diagram"
+
+class Screen {
+    .. Instance Variables ..
+    - _aspect_ratio: AspectRatio
+    - _resolution: int
+    - _canvas_width: int
+    - _canvas_height: int
+    - _background: str
+    - _window: Optional[tk.Tk]
+    - _canvas: Optional[tk.Canvas]
+    .. Constructor ..
+    + __init__(aspect_ratio: AspectRatio, resolution: int, background: Shader = Shader(0, 0, 0)): None
+    .. Public Methods ..
+    + show(): None
+    + render(faces: List[Face2D]): None
+    .. Private Methods ..
+    - _create_canvas(): None
+    - _translate_point(point: Point): Point
+    - _draw_face(face: Face2D): None
+    - _draw_faces(faces: List[Face2D]): None
+}
+@enduml

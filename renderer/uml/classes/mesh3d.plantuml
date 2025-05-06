@@ -1,0 +1,23 @@
+@startuml Mesh3D
+scale 2
+title "UML Class Diagram"
+
+class Mesh3D {
+    .. Instance Variables ..
+    - _faces: List[Face3D]
+    - _base_shader: Shader | None
+    - _variance: int
+    .. Properties ..
+    + faces: List[Face3D] {get; set;}
+    + base_shader: Shader | None {get;}
+    + variance: int {get;}
+    .. Constructor ..
+    + __init__(faces: List[Face3D]): None
+    .. Instance Methods ..
+    + set_color(value: Shader): None
+    + set_color_variance(value: Shader | None = None, variance: int = 25): None
+    + add(new_face: Face3D): None
+    + __str__(): str
+    + __repr__(): str
+}
+@enduml

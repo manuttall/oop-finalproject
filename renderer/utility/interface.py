@@ -150,59 +150,72 @@ class Interface:
         """
         messagebox.showerror("Input Error", message)
 
+    def _resolve_filepath(self, path: str) -> str:
+        """Validates and resolves the file path."""
+        if not path or path == "demo.obj":
+            path = "assets/demo.obj"
+        elif not os.path.isabs(path) and not path.startswith("assets/"):
+            path = os.path.join("assets", path)
+        if not os.path.isfile(path):
+            raise ValueError(f"File not found: {path}")
+        return path
+
+    def _parse_vector(self, text: str, length: int, label: str) -> tuple[float, ...]:
+        """Parses a space-separated vector string."""
+        parts = tuple(map(float, text.split()))
+        if len(parts) != length:
+            raise ValueError(f"{label} must have exactly {length} numbers.")
+        return parts
+
+    def _parse_color(self, text: str) -> tuple[int, int, int]:
+        """Parses an RGB color input."""
+        parts = tuple(map(int, text.split()))
+        if len(parts) != 3 or any(not (0 <= c <= 255) for c in parts):
+            raise ValueError("Background color must have"
+                             "three integers between 0 and 255.")
+        return parts
+
+    def _parse_positive_int(self, text: str, label: str) -> int:
+        """Parses a positive integer field."""
+        value = int(text)
+        if value <= 0:
+            raise ValueError(f"{label} must be positive.")
+        return value
+
+    def _parse_non_negative_int(self, text: str, _label: str) -> int:
+        """Parses a non-negative integer field."""
+        return max(0, int(text)) if text else 10
+
     def _collect_input(self) -> None:
-        """Collects input from user, validates it, and stores in _result.
-
-        Raises:
-            ValueError: if any field is invalid.
-        """
+        """Collects input from user, validates it, and stores in _result."""
         try:
-            filepath = self._entry_filepath.get()
-            if not filepath or filepath == "demo.obj":
-                filepath = "assets/demo.obj"
-            elif not os.path.isabs(filepath) and not filepath.startswith("assets/"):
-                filepath = os.path.join("assets", filepath)
+            filepath = self._resolve_filepath(self._entry_filepath.get())
+            cam_origin = self._parse_vector(self._entry_cam_origin.get(),
+                                            3, "Camera origin")
+            look_at = self._parse_vector(self._entry_look_at.get(),
+                                         3, "Camera look-at")
+            aspect = self._parse_vector(self._entry_aspect.get(),
+                                        2, "Aspect ratio")
+            resolution = self._parse_positive_int(self._entry_resolution.get(),
+                                                  "Resolution")
+            variance = self._parse_non_negative_int(self._entry_variance.get(),
+                                                    "Variance")
+            bg_color = self._parse_color(self._entry_bgcolor.get())
 
-            if not os.path.isfile(filepath):
-                raise ValueError(f"File not found: {filepath}")
-
-            cam_origin = tuple(map(float, self._entry_cam_origin.get().split()))
-            look_at = tuple(map(float, self._entry_look_at.get().split()))
-            aspect = tuple(map(float, self._entry_aspect.get().split()))
-            resolution = int(self._entry_resolution.get())
-            variance = int(self._entry_variance.get())
-            bg_color = tuple(map(int, self._entry_bgcolor.get().split()))
-
-            if len(bg_color) != 3 or any(not (0 <= c <= 255) for c in bg_color):
-                raise ValueError("Background color must have "
-                                 "three integers between 0 and 255.")
-            if len(cam_origin) != 3 or len(look_at) != 3:
-                raise ValueError("Camera origin and look-at "
-                                 "must each have three numbers.")
-            if len(aspect) != 2:
-                raise ValueError("Aspect ratio must have exactly two numbers.")
-            if aspect[1] <= 0 or aspect[0] <= 0:
-                raise ValueError("Aspect ratio must be positive.")
-            if resolution <= 0:
-                raise ValueError("Resolution must be positive.")
-            if variance < 0:
-                raise ValueError("Variance must be non-negative.")
+            self._result = {
+                "filepath": filepath,
+                "camera_origin": cam_origin,
+                "look_at": look_at,
+                "aspect_ratio": aspect,
+                "resolution": resolution,
+                "variance": variance,
+                "background_color": bg_color
+            }
+            self._root.destroy()
 
         except ValueError as e:
             self._result = {}
             self._show_error(str(e))
-            return
-
-        self._result = {
-            "filepath": filepath,
-            "camera_origin": cam_origin,
-            "look_at": look_at,
-            "aspect_ratio": aspect,
-            "resolution": resolution,
-            "variance": variance,
-            "background_color": bg_color
-        }
-        self._root.destroy()
 
     def run(self) -> dict[str, Any]:
         """Runs the Tkinter interface and returns user input.

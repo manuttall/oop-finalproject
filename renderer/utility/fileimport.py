@@ -86,6 +86,8 @@ class FileImport:
             for _ in range(num_faces):
                 vertices: List[Vertex] = []
                 for _ in range(3):
+                    if iterator >= len(self._data):
+                        break
                     parts = self._data[iterator].split()
                     if parts[0] != "v":
                         raise ValueError(

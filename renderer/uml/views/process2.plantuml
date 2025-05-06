@@ -1,0 +1,13 @@
+@startuml ProcessView_SceneSetup
+title "Process View – Scene Setup"
+
+start
+:Receive settings from Interface;
+:Load geometry file using FileImport;
+:Create Mesh3D objects;
+:Assign base shader and color variance;
+:Instantiate Camera and AspectRatio;
+:Create Scene with camera + meshes;
+:Create Screen with aspect ratio;
+stop
+@enduml

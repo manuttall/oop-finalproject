@@ -1,0 +1,11 @@
+@startuml ContextView
+title "UML Context View Diagram"
+
+actor User
+
+rectangle "Client App" {
+    User --> (Provide Object Data)
+    User --> (View Object)
+}
+
+@enduml

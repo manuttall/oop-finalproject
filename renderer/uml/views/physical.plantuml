@@ -1,0 +1,16 @@
+@startuml PhysicalView
+title Physical View – 3D Rendering Engine
+
+node "User's Computer" {
+    [3D Engine (Python Application)]
+    [Tkinter GUI]
+    [Local File System]
+    [CPU]
+    [Memory]
+
+    [3D Engine (Python Application)] --> [Tkinter GUI] : Renders 2D Faces
+    [3D Engine (Python Application)] --> [Local File System] : Reads Mesh/.obj Files
+    [3D Engine (Python Application)] --> [CPU] : Computes Projections & Geometry
+    [3D Engine (Python Application)] --> [Memory] : Stores Scene, Meshes, Camera
+}
+@enduml

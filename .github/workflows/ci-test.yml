@@ -67,7 +67,7 @@ jobs:
           pytest --cov-report=xml:demo-assignments/A1/cold/coverage.xml --cov=demo-assignments/A1/cold demo-assignments/A1/cold/tests
           pytest --cov-report=xml:demo-assignments/A1-OOP/cold/coverage.xml --cov=demo-assignments/A1-OOP/cold demo-assignments/A1-OOP/cold/tests
           pytest --cov-report=xml:demo-assignments/A2-ABC/egypt/coverage.xml --cov=demo-assignments/A2-ABC/egypt demo-assignments/A2-ABC/egypt/tests
-          pytest --cov-report=xml: renderer/coverage.xml --cov= renderer renderer/tests
+          pytest --cov-report=xml:renderer/coverage.xml --cov=renderer renderer/tests
           codecov
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1

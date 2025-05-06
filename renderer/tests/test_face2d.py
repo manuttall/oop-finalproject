@@ -18,6 +18,7 @@ class TestFace2D(unittest.TestCase):
     """Unit tests for the Face2D class."""
 
     def setUp(self) -> None:
+        """Set up for testing."""
         self.points: List[Point] = [Point(0, 0), Point(1, 0), Point(0, 1)]
         self.color: Shader = Shader(255, 0, 0)
         self.face = Face2D(self.points, 10.0, self.color)

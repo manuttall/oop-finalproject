@@ -14,10 +14,13 @@ class Interface {
     - _entry_bgcolor: tk.Entry
     - _entry_variance: tk.Entry
     - _render_button: tk.Button
+
     .. Constructor ..
     + __init__(): None
+
     .. Public Methods ..
     + run(): dict[str, Any]
+
     .. Private Methods ..
     - _setup_widgets(): None
     - _on_enter(event: tk.Event[Any]): None
@@ -26,5 +29,12 @@ class Interface {
     - _center_window(width: int, height: int): None
     - _show_error(message: str): None
     - _collect_input(): None
+
+    .. Parsing & Validation ..
+    - _resolve_filepath(path: str): str
+    - _parse_vector(text: str, length: int, label: str): tuple[float, ...]
+    - _parse_color(text: str): tuple[int, int, int]
+    - _parse_positive_int(text: str, label: str): int
+    - _parse_non_negative_int(text: str, _label: str): int
 }
 @enduml

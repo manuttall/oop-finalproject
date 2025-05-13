@@ -9,6 +9,8 @@
 | Self Grade | 100/100 |
 | Notes | 1st place project for CMU Student Showcase 2025. |
 
+Read the **[Project-Specific README](https://github.com/manuttall/oop-finalproject/blob/main/renderer/README.md)** for full instructions.
+
 ## Abstract
 
 ### Simplistic Object Rendering In Python:
@@ -17,20 +19,16 @@ This presentation will showcase the development of a simple rendering engine in 
 
 ---
 
-## 📁 File Structure
+## 🔗 Project Resources
 
-```
-📁 renderer/ - Main folder containing the project and engine
-├── engine.py         - Main engine used to run the program
-├── Makefile          - Used to test or run the Render engine 
-├── 📁 assets/         - Contains .obj files to be rendered
-├── 📁 docs/
-│   ├── 📁 code-docs/  - Documentation generated via pdocs
-│   ├── 📁 pycov/      - Testing coverage documentation
-├── 📁 geometry/       - Geometric data classes
-├── 📁 scene/          - Scene data and math utility classes
-├── 📁 tests/          - All unit testing code
-├── 📁 uml/            - UML diagrams of the system
-├── 📁 utility/        - File and data management utilities
-```
+- 🔧 **Main Project Folder**: [Renderer on GitHub](https://github.com/manuttall/oop-finalproject/tree/main/renderer)
+- 📄 **Project-Specific README**: [renderer/README.md](https://github.com/manuttall/oop-finalproject/blob/main/renderer/README.md)
+- 🖼️ **Screenshots Folder**: [View screenshots](https://github.com/manuttall/oop-finalproject/tree/main/screenshots)
+- 📊 **UML Diagrams**: [View UML diagrams](https://github.com/manuttall/oop-finalproject/tree/main/renderer/uml/img)
+- ✅ **Assignment Requirements**: [Showcase Grades Folder](https://github.com/manuttall/oop-finalproject/tree/main/showcase-grades)
+- 📋 **GitHub Project Kanban Board**: [View GitHub Project](https://github.com/users/manuttall/projects/1/views/1)
+- 🗂️ **Kanban Board Screenshot**: [Project Management Screenshot](https://github.com/manuttall/oop-finalproject/tree/main/showcase-grades/project-management)
+- 🎤 **Student Showcase Presentation**: [View Presentation](https://github.com/manuttall/oop-finalproject/tree/main/showcase-grades/presentation)
+- 🏅 **Judges’ Scores**: [Showcase Judges’ Scores](https://github.com/manuttall/oop-finalproject/tree/main/showcase-grades/judge-scores)
 
+---

@@ -2,15 +2,14 @@
 
 A project designed to emphasize object-oriented programming strategies in building a 3D rendering engine.
 
-| Name | Python Rendering  |
+| Name | Python Rendering Engine |
 | :--- | :--- |
-| Name | Python Rendering  |
-| Description | A project designed to emphasize object oranted programing coding stratigies |
+| Description | A 3D rendering engine project designed to emphasize object oriented programming coding strategies. |
 | Due Date | 8-May-2025 |
 | Status | Complete |
 | Location | https://github.com/manuttall/oop-finalproject/tree/main/renderer|
 | Self Grade | 100/100 |
-| Notes | 1st place project for student showcase |
+| Notes | 1st place project for CMU Student Showcase 2025. |
 
 ## 📝 Justification for Self-Grade
 
